@@ -1,0 +1,548 @@
+{
+  "id": "ch8",
+  "number": 8,
+  "title": "Chapter 8 — Field-Effect Transistors (FETs)",
+  "shortTitle": "FETs",
+  "icon": "🎚️",
+  "sections": [
+    {
+      "id": "8-1",
+      "title": "The JFET",
+      "summary": "Junction Field-Effect Transistor structure (n-channel and p-channel), schematic symbols, and the basic idea of a unipolar, voltage-controlled device whose gate-to-source pn junction is held in reverse bias."
+    },
+    {
+      "id": "8-2",
+      "title": "JFET Characteristics and Parameters",
+      "summary": "Drain characteristic curves, IDSS, pinch-off voltage VP, cutoff voltage VGS(off) (equal in magnitude but opposite polarity to VP), the square-law transfer equation ID = IDSS(1 − VGS/VGS(off))², transconductance gm = gm0(1 − VGS/VGS(off)) with gm0 = 2·IDSS/|VGS(off)|, input resistance from IGSS, and gate input capacitance."
+    },
+    {
+      "id": "8-3",
+      "title": "JFET Biasing",
+      "summary": "Self-bias (RS sets VGS), voltage-divider bias, and current-source bias. Midpoint-bias rule of thumb: VGS ≈ VGS(off)/3.4, ID ≈ IDSS/2. In self-bias the gate sits at 0 V (ground through RG); the source rises to make VGS = −ID·RS for an n-channel."
+    },
+    {
+      "id": "8-4",
+      "title": "The Ohmic Region",
+      "summary": "Below pinch-off the JFET behaves as a voltage-controlled resistor. Drain-to-source resistance depends on VGS, the Q-point values, and the slope of the curve at the Q-point. When biased at the origin (VDS ≈ 0, VGS = 0) the ac channel resistance is rds = 1/gm0, set entirely by the transconductance."
+    },
+    {
+      "id": "8-5",
+      "title": "The MOSFET",
+      "summary": "Metal-Oxide-Semiconductor FET — gate is insulated by a thin SiO₂ layer (no pn junction). The D-MOSFET has a physical channel and operates in BOTH depletion and enhancement modes. The E-MOSFET has no physical channel; a channel is induced only after VGS exceeds the threshold VGS(th) (enhancement mode only)."
+    },
+    {
+      "id": "8-6",
+      "title": "MOSFET Characteristics and Parameters",
+      "summary": "Handling precautions for MOS devices (sensitive to electrostatic discharge — ESD), extremely high gate input resistance, RDS(on) which sets conduction power loss (P = ID²·RDS(on)), and the safe operating area (SOA) plotted on ID versus VDS."
+    },
+    {
+      "id": "8-7",
+      "title": "MOSFET Biasing",
+      "summary": "Zero-bias is natural for D-MOSFETs (at VGS = 0, ID = IDSS). E-MOSFETs require VGS beyond VGS(th) and use voltage-divider bias or drain-feedback bias to set the Q-point in the active region."
+    },
+    {
+      "id": "8-8",
+      "title": "The IGBT",
+      "summary": "The Insulated-Gate Bipolar Transistor combines a MOSFET-style insulated-gate input with a BJT-style high-current output. It is the device of choice for high-voltage, high-current switching: motor drives, inverters, and switched-mode power supplies."
+    },
+    {
+      "id": "8-9",
+      "title": "Troubleshooting",
+      "summary": "Common FET-circuit fault modes — opens and shorts in source, drain, and gate paths — and the dc-voltage signatures used to localize them."
+    }
+  ],
+  "questions": [
+    {
+      "id": "ch8_tf1",
+      "category": "True/False",
+      "section": "8-1",
+      "text": "The JFET always operates with a reverse-biased gate-to-source pn junction.",
+      "answer": true,
+      "explanation": "Reverse-biasing the gate-to-source junction is exactly what creates the depletion region that pinches the channel and gives the JFET its very high input impedance. Forward-biasing it would let gate current flow and destroy normal JFET behavior."
+    },
+    {
+      "id": "ch8_tf2",
+      "category": "True/False",
+      "section": "8-2",
+      "text": "The channel resistance of a JFET is a constant.",
+      "answer": false,
+      "explanation": "The channel is narrowed by the depletion region, which grows or shrinks with VGS. As VGS becomes more negative (n-channel), the channel narrows and resistance rises — that's exactly how a JFET works as a voltage-controlled resistor in the ohmic region."
+    },
+    {
+      "id": "ch8_tf3",
+      "category": "True/False",
+      "section": "8-2",
+      "text": "The gate-to-source voltage of an n-channel JFET must be negative.",
+      "answer": true,
+      "explanation": "For an n-channel JFET, VGS must be ≤ 0 to keep the gate-source pn junction reverse-biased. A positive VGS would forward-bias the junction and drive gate current, breaking JFET operation. (VGS = 0 is the limiting case that gives the maximum drain current IDSS.)"
+    },
+    {
+      "id": "ch8_tf4",
+      "category": "True/False",
+      "section": "8-2",
+      "text": "ID becomes zero at the pinch-off voltage.",
+      "answer": false,
+      "explanation": "At the pinch-off voltage VP, ID becomes CONSTANT (saturated at IDSS for VGS = 0), not zero. ID = 0 occurs at the cutoff voltage VGS(off), which is a different parameter. Don't confuse VP (on the drain curves) with VGS(off) (on the transfer curve)."
+    },
+    {
+      "id": "ch8_tf5",
+      "category": "True/False",
+      "section": "8-2",
+      "text": "VGS has no effect on ID.",
+      "answer": false,
+      "explanation": "VGS is the controlling variable for the JFET — it is precisely what determines ID through the square-law relation ID = IDSS(1 − VGS/VGS(off))²."
+    },
+    {
+      "id": "ch8_tf6",
+      "category": "True/False",
+      "section": "8-2",
+      "text": "VGS(off) and VP are always equal in magnitude but opposite in polarity.",
+      "answer": true,
+      "explanation": "VP (pinch-off voltage, defined on the drain curves at VGS = 0) and VGS(off) (cutoff voltage on the transfer curve) have the same magnitude but opposite signs. For an n-channel JFET with VP = +4 V, VGS(off) = −4 V."
+    },
+    {
+      "id": "ch8_tf7",
+      "category": "True/False",
+      "section": "8-2",
+      "text": "The JFET is a square-law device because of the mathematical expression of its transfer characteristic curve.",
+      "answer": true,
+      "explanation": "The transfer relation ID = IDSS(1 − VGS/VGS(off))² is a square (parabolic) law — that's literally where the name 'square-law device' comes from."
+    },
+    {
+      "id": "ch8_tf8",
+      "category": "True/False",
+      "section": "8-2",
+      "text": "Forward transconductance is the change in drain voltage for a given change in gate voltage.",
+      "answer": false,
+      "explanation": "Forward transconductance is the change in drain CURRENT for a given change in gate voltage: gm = ΔID/ΔVGS (units: siemens). The statement confuses voltage and current."
+    },
+    {
+      "id": "ch8_tf9",
+      "category": "True/False",
+      "section": "8-2",
+      "text": "The parameters gm and yfs are the same.",
+      "answer": true,
+      "explanation": "Both symbols refer to the forward transfer admittance — the same physical quantity. gm is common in textbooks; yfs is the formal datasheet name."
+    },
+    {
+      "id": "ch8_tf10",
+      "category": "True/False",
+      "section": "8-5",
+      "text": "The D-MOSFET can be operated in two modes.",
+      "answer": true,
+      "explanation": "The D-MOSFET (depletion MOSFET) has a physical channel and so works in BOTH depletion mode (VGS < 0 for n-channel, narrowing the channel) and enhancement mode (VGS > 0, widening it). That two-mode capability is its defining feature."
+    },
+    {
+      "id": "ch8_tf11",
+      "category": "True/False",
+      "section": "8-5",
+      "text": "An E-MOSFET operates in the depletion mode.",
+      "answer": false,
+      "explanation": "The E-MOSFET has no physical channel; a channel must be INDUCED by VGS exceeding the threshold VGS(th). It operates only in the enhancement mode."
+    },
+    {
+      "id": "ch8_tf12",
+      "category": "True/False",
+      "section": "8-5",
+      "text": "A D-MOSFET has a physical channel and an E-MOSFET has an induced channel.",
+      "answer": true,
+      "explanation": "Exactly the structural distinction between the two MOSFET families: the D-MOSFET is fabricated with a permanent doped channel; the E-MOSFET only has a channel after VGS pulls one into existence."
+    },
+    {
+      "id": "ch8_tf13",
+      "category": "True/False",
+      "section": "8-6",
+      "text": "ESD means electronic semiconductor device.",
+      "answer": false,
+      "explanation": "ESD stands for Electrostatic Discharge — the static-electricity events that can puncture the very thin gate oxide of a MOSFET and destroy it."
+    },
+    {
+      "id": "ch8_tf14",
+      "category": "True/False",
+      "section": "8-6",
+      "text": "MOSFETs must be handled with care.",
+      "answer": true,
+      "explanation": "Because of their susceptibility to ESD, MOSFETs are shipped with shorting clips or conductive foam, handled at grounded workstations, and worked on with antistatic wrist straps."
+    },
+    {
+      "id": "ch8_tf15",
+      "category": "True/False",
+      "section": "8-6",
+      "text": "The RDS(on) specification for a MOSFET determines the power and heating loss.",
+      "answer": true,
+      "explanation": "When the MOSFET is fully on, conduction loss is PD = ID²·RDS(on). A lower RDS(on) means less heat for the same drain current — a key figure of merit for power MOSFETs."
+    },
+    {
+      "id": "ch8_tf16",
+      "category": "True/False",
+      "section": "8-6",
+      "text": "The safe operating area for a MOSFET can be shown on a graph of drain current versus gate voltage.",
+      "answer": false,
+      "explanation": "The Safe Operating Area (SOA) is plotted as drain current ID versus drain-to-source voltage VDS, bounded by the maximum continuous current, the breakdown voltage, and the maximum power dissipation hyperbola. Not VGS."
+    },
+
+    {
+      "id": "ch8_st1",
+      "category": "Self-Test",
+      "section": "8-1",
+      "text": "The JFET is",
+      "options": [
+        "a unipolar device",
+        "a voltage-controlled device",
+        "a current-controlled device",
+        "answers (a) and (c)",
+        "answers (a) and (b)"
+      ],
+      "answer": 4,
+      "explanation": "The JFET is unipolar (only one carrier type — electrons in n-channel, holes in p-channel) AND voltage-controlled (VGS sets ID through a high-impedance reverse-biased gate). It is NOT current-controlled — that's a BJT."
+    },
+    {
+      "id": "ch8_st2",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "The channel of a JFET is between the",
+      "options": [
+        "gate and drain",
+        "drain and source",
+        "gate and source",
+        "input and output"
+      ],
+      "answer": 1,
+      "explanation": "The conducting channel runs from the source to the drain. The gate is the control terminal alongside the channel — it doesn't carry the channel current."
+    },
+    {
+      "id": "ch8_st3",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "A JFET always operates with",
+      "options": [
+        "the gate-to-source pn junction reverse-biased",
+        "the gate-to-source pn junction forward-biased",
+        "the drain connected to ground",
+        "the gate connected to the source"
+      ],
+      "answer": 0,
+      "explanation": "Reverse-biasing the gate junction is what gives the JFET its high input impedance and creates the depletion region used to control the channel."
+    },
+    {
+      "id": "ch8_st4",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "For VGS = 0 V, the drain current becomes constant when VDS exceeds",
+      "options": [
+        "cutoff",
+        "VDD",
+        "VP",
+        "0 V"
+      ],
+      "answer": 2,
+      "explanation": "At VGS = 0 V, increasing VDS past the pinch-off voltage VP puts the JFET in the constant-current region; ID then levels off at IDSS until breakdown."
+    },
+    {
+      "id": "ch8_st5",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "The constant-current region of a JFET lies between",
+      "options": [
+        "cutoff and saturation",
+        "cutoff and pinch-off",
+        "0 and IDSS",
+        "pinch-off and breakdown"
+      ],
+      "answer": 3,
+      "explanation": "Below VP the JFET is in the ohmic region (ID rises with VDS). Above VP and below the breakdown voltage, ID is essentially flat — that flat band is the constant-current (active) region used for amplification."
+    },
+    {
+      "id": "ch8_st6",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "IDSS is",
+      "options": [
+        "the drain current with the source shorted",
+        "the drain current at cutoff",
+        "the maximum possible drain current",
+        "the midpoint drain current"
+      ],
+      "answer": 2,
+      "explanation": "IDSS = Drain-to-Source current with the gate Shorted to source (VGS = 0). It's the maximum drain current the JFET will produce in normal operation; biasing the gate negative can only reduce ID below IDSS."
+    },
+    {
+      "id": "ch8_st7",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "Drain current in the constant-current region increases when",
+      "options": [
+        "the gate-to-source bias voltage decreases",
+        "the gate-to-source bias voltage increases",
+        "the drain-to-source voltage increases",
+        "the drain-to-source voltage decreases"
+      ],
+      "answer": 0,
+      "explanation": "In the constant-current region, ID is essentially independent of VDS but depends on VGS. As the magnitude of the (reverse) gate bias decreases — i.e., VGS moves toward 0 V — the depletion region narrows, the channel widens, and ID rises (toward IDSS)."
+    },
+    {
+      "id": "ch8_st8",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "In a certain JFET circuit, VGS = 0 V, VDD = 15 V, IDSS = 15 mA, and RD = 470 Ω. If RD is decreased to 330 Ω, IDSS is",
+      "options": [
+        "19.5 mA",
+        "10.5 mA",
+        "15 mA",
+        "1 mA"
+      ],
+      "answer": 2,
+      "explanation": "IDSS is a JFET PARAMETER — the drain current at VGS = 0 in the constant-current region, set by the device itself, not by the external resistor. Changing RD does not change IDSS; the spec stays at 15 mA. (RD changes the load line, but not the device's IDSS rating.)"
+    },
+    {
+      "id": "ch8_st9",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "At cutoff, the JFET channel is",
+      "options": [
+        "at its widest point",
+        "completely closed by the depletion region",
+        "extremely narrow",
+        "reverse-biased"
+      ],
+      "answer": 1,
+      "explanation": "At VGS = VGS(off), the depletion regions from each side of the channel meet and pinch the channel completely shut, so ID = 0."
+    },
+    {
+      "id": "ch8_st10",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "A certain JFET datasheet gives VGS(off) = −4 V. The pinch-off voltage, VP,",
+      "options": [
+        "cannot be determined",
+        "is −4 V",
+        "depends on VGS",
+        "is +4 V"
+      ],
+      "answer": 3,
+      "explanation": "VP and VGS(off) are equal in magnitude but opposite in polarity. With VGS(off) = −4 V → VP = +4 V."
+    },
+    {
+      "id": "ch8_st11",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "The JFET in Question 10 (with VGS(off) = −4 V)",
+      "options": [
+        "is an n channel",
+        "is a p channel",
+        "can be either"
+      ],
+      "answer": 0,
+      "explanation": "VGS(off) is NEGATIVE for an n-channel JFET (the gate must go negative to pinch the n-channel off) and POSITIVE for a p-channel. VGS(off) = −4 V → n-channel."
+    },
+    {
+      "id": "ch8_st12",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "For a certain JFET, IGSS = 10 nA at VGS = 10 V. The input resistance is",
+      "options": [
+        "100 MΩ",
+        "1 MΩ",
+        "1000 MΩ",
+        "10,000 MΩ"
+      ],
+      "answer": 2,
+      "explanation": "RIN = VGS / IGSS = 10 V / 10 nA = 10 V / (10 × 10⁻⁹ A) = 1 × 10⁹ Ω = 1000 MΩ. (Note: your printed quiz seems to have a typo with both (c) and (d) reading '1000 MV'; the textbook (d) is 10,000 MΩ. Either way the answer is (c) 1000 MΩ.)"
+    },
+    {
+      "id": "ch8_st13",
+      "category": "Self-Test",
+      "section": "8-2",
+      "text": "In a certain JFET, IDSS = 5 mA and VGS(off) = −4 V. The value of gm0 is",
+      "options": [
+        "0.625 mS",
+        "1.25 mS",
+        "1.6 mS",
+        "2.5 mS"
+      ],
+      "answer": 3,
+      "explanation": "gm0 = 2·IDSS / |VGS(off)| = 2(5 mA) / 4 V = 10 mA / 4 V = 2.5 mS. (gm0 is the transconductance at VGS = 0; it's the maximum value of gm for that JFET.)"
+    },
+    {
+      "id": "ch8_st14",
+      "category": "Self-Test",
+      "section": "8-3",
+      "text": "For a certain p-channel JFET, VGS(off) = 8 V. The value of VGS for an approximate midpoint bias is",
+      "options": [
+        "4 V",
+        "0 V",
+        "1.25 V",
+        "2.34 V"
+      ],
+      "answer": 3,
+      "explanation": "Midpoint-bias rule of thumb: VGS ≈ VGS(off) / 3.4 = 8 V / 3.4 ≈ 2.35 V. (For a p-channel device, VGS(off) is positive, so the bias voltage is also positive — about +2.34 V — which gives ID ≈ IDSS/2.)"
+    },
+    {
+      "id": "ch8_st15",
+      "category": "Self-Test",
+      "section": "8-3",
+      "text": "In a self-biased JFET, the gate is at",
+      "options": [
+        "a positive voltage",
+        "0 V",
+        "a negative voltage",
+        "ground"
+      ],
+      "answer": 1,
+      "explanation": "In a self-bias circuit the gate is tied to ground through RG. Because IGSS is essentially zero, no DC drop appears across RG, so VG = 0 V. The required negative VGS is produced by the source rising above ground (VS = ID·RS), giving VGS = VG − VS = −ID·RS. (Option (d) 'ground' describes the same node, but the textbook answer for the gate VOLTAGE is 0 V.)"
+    },
+    {
+      "id": "ch8_st16",
+      "category": "Self-Test",
+      "section": "8-4",
+      "text": "The drain-to-source resistance in the ohmic region depends on",
+      "options": [
+        "VGS",
+        "the Q-point values",
+        "the slope of the curve at the Q-point",
+        "all of these"
+      ],
+      "answer": 3,
+      "explanation": "RDS in the ohmic region is set by VGS (which determines the channel width), by the Q-point (the operating values of ID and VDS), and equivalently by the slope of the drain curve at that Q-point — all three descriptions point to the same physical fact, so 'all of these' is correct."
+    },
+    {
+      "id": "ch8_st17",
+      "category": "Self-Test",
+      "section": "8-4",
+      "text": "To be used as a variable resistor, a JFET must be",
+      "options": [
+        "an n-channel device",
+        "a p-channel device",
+        "biased in the ohmic region",
+        "biased in saturation"
+      ],
+      "answer": 2,
+      "explanation": "Below pinch-off (the ohmic region), the JFET's drain curves are nearly linear through the origin and their slope — the channel resistance — varies with VGS. Either polarity of JFET works; the key requirement is operating below VP."
+    },
+    {
+      "id": "ch8_st18",
+      "category": "Self-Test",
+      "section": "8-4",
+      "text": "When a JFET is biased at the origin, the ac channel resistance is determined by",
+      "options": [
+        "the Q-point values",
+        "VGS",
+        "the transconductance",
+        "answers (b) and (c)"
+      ],
+      "answer": 2,
+      "explanation": "At the origin (VDS = 0, VGS = 0), the channel resistance reduces to rds = 1/gm0, so the transconductance alone fixes it. (Away from the origin, VGS and the Q-point both matter — but right at the origin, gm0 is the controlling parameter.)"
+    },
+    {
+      "id": "ch8_st19",
+      "category": "Self-Test",
+      "section": "8-5",
+      "text": "A MOSFET differs from a JFET mainly because",
+      "options": [
+        "of the power rating",
+        "the MOSFET has two gates",
+        "the JFET has a pn junction",
+        "MOSFETs do not have a physical channel"
+      ],
+      "answer": 2,
+      "explanation": "The defining structural difference is the gate. The JFET uses a reverse-biased pn junction as its gate; the MOSFET uses a metal/poly gate insulated from the channel by a thin SiO₂ layer — no pn junction at all. (Note: D-MOSFETs DO have a physical channel, so option (d) is wrong — only E-MOSFETs lack one.)"
+    },
+    {
+      "id": "ch8_st20",
+      "category": "Self-Test",
+      "section": "8-5",
+      "text": "A D-MOSFET operates in",
+      "options": [
+        "the depletion mode only",
+        "the enhancement mode only",
+        "the ohmic region only",
+        "both the depletion and enhancement modes"
+      ],
+      "answer": 3,
+      "explanation": "Because the D-MOSFET has a physical channel, applying VGS of either sign works: negative VGS depletes the channel (depletion mode) and positive VGS enhances it (enhancement mode)."
+    },
+    {
+      "id": "ch8_st21",
+      "category": "Self-Test",
+      "section": "8-5",
+      "text": "An n-channel D-MOSFET with a positive VGS is operating in",
+      "options": [
+        "the depletion mode",
+        "the enhancement mode",
+        "cutoff",
+        "saturation"
+      ],
+      "answer": 1,
+      "explanation": "Positive VGS on an n-channel D-MOSFET pulls more electrons into the channel, widening it and increasing ID above IDSS — that's enhancement-mode operation."
+    },
+    {
+      "id": "ch8_st22",
+      "category": "Self-Test",
+      "section": "8-5",
+      "text": "A certain p-channel E-MOSFET has a VGS(th) = −2 V. If VGS = 0 V, the drain current is",
+      "options": [
+        "0 A",
+        "ID(on)",
+        "maximum",
+        "IDSS"
+      ],
+      "answer": 0,
+      "explanation": "An E-MOSFET only conducts when VGS is past the threshold. A p-channel device needs VGS more NEGATIVE than VGS(th) = −2 V (e.g., −3 V) to turn on. At VGS = 0 V, the device is OFF and ID = 0. (IDSS is a JFET / D-MOSFET parameter — it doesn't apply to E-MOSFETs at all.)"
+    },
+    {
+      "id": "ch8_st23",
+      "category": "Self-Test",
+      "section": "8-5",
+      "text": "In an E-MOSFET, there is no drain current until VGS",
+      "options": [
+        "reaches VGS(th)",
+        "is positive",
+        "is negative",
+        "equals 0 V"
+      ],
+      "answer": 0,
+      "explanation": "VGS(th) is the threshold voltage at which the channel is just induced. Below threshold the E-MOSFET is off. The required polarity of VGS(th) depends on whether the device is n- or p-channel — so 'positive' or 'negative' alone is incomplete."
+    },
+    {
+      "id": "ch8_st24",
+      "category": "Self-Test",
+      "section": "8-6",
+      "text": "All MOS devices are subject to damage from",
+      "options": [
+        "excessive heat",
+        "electrostatic discharge",
+        "excessive voltage",
+        "all of these"
+      ],
+      "answer": 3,
+      "explanation": "MOS devices can be damaged by all three: heat (junction temperature exceeding the rated maximum), ESD (puncturing the thin gate oxide), and excessive voltage (breakdown of gate oxide or drain-source). ESD is the most distinctive MOSFET failure mode, but the other two apply too."
+    },
+    {
+      "id": "ch8_st25",
+      "category": "Self-Test",
+      "section": "8-7",
+      "text": "A certain D-MOSFET is biased at VGS = 0 V. Its datasheet specifies IDSS = 20 mA and VGS(off) = −5 V. The value of the drain current",
+      "options": [
+        "is 0 A",
+        "cannot be determined",
+        "is 20 mA"
+      ],
+      "answer": 2,
+      "explanation": "For a D-MOSFET, IDSS is by definition the drain current at VGS = 0 V (the zero-bias point). So ID = IDSS = 20 mA. This is exactly why D-MOSFETs work so well with the ultra-simple zero-bias configuration — no source resistor required."
+    },
+    {
+      "id": "ch8_st26",
+      "category": "Self-Test",
+      "section": "8-8",
+      "text": "An IGBT is generally used in",
+      "options": [
+        "low-power applications",
+        "rf applications",
+        "high-voltage applications",
+        "low-current applications"
+      ],
+      "answer": 2,
+      "explanation": "The IGBT marries a MOSFET-style high-impedance gate with a BJT-style low-conduction-loss output. That combination makes it the dominant device for high-voltage, high-current switching: motor drives, traction inverters, welding equipment, and switched-mode power supplies."
+    }
+  ]
+}
