@@ -5,9 +5,9 @@
 // That's it — the rest of the app picks it up automatically.
 
 import chapter2 from './chapter2.json';
-import chapter4 from './chapter4.json';
-
-export const CHAPTERS = [chapter2, chapter4];
+import chapter3 from './chapter3.json';
+   // ...
+export const CHAPTERS = [chapter2, chapter3, chapter4];
 
 // Convenience helpers used by App.jsx
 export const ALL_QUESTIONS = CHAPTERS.flatMap(ch =>
