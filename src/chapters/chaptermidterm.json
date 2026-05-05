@@ -1,0 +1,384 @@
+{
+  "id": "chMidterm",
+  "number": 5,
+  "title": "Midterm — Practice Exam",
+  "shortTitle": "Mid",
+  "icon": "📝",
+  "sections": [
+    {
+      "id": "0-1",
+      "title": "Basic Circuit Theory",
+      "summary": "Ohm's law (V = IR) and Kirchhoff's voltage law (KVL) — algebraic sum of voltages around any closed loop equals zero."
+    },
+    {
+      "id": "1-1",
+      "title": "The Atom",
+      "summary": "Atomic structure, valence vs. free electrons, ions, atomic number; silicon has Z = 14."
+    },
+    {
+      "id": "1-2",
+      "title": "Materials Used in Electronics",
+      "summary": "Conductors, insulators, semiconductors; energy bands (valence vs. conduction); covalent bonding via shared valence electrons."
+    },
+    {
+      "id": "1-3",
+      "title": "Current in Semiconductors",
+      "summary": "Electron current (conduction band) and hole current (valence band); silicon crystal sharing produces 8 effective valence electrons per atom."
+    },
+    {
+      "id": "1-4",
+      "title": "N-Type and P-Type Semiconductors",
+      "summary": "Pentavalent doping → N-type (electrons are majority carriers); trivalent doping → P-type (holes are majority carriers)."
+    },
+    {
+      "id": "1-5",
+      "title": "The PN Junction",
+      "summary": "Depletion region, diffusion of majority carriers across the junction, barrier potential; forward bias narrows the depletion region, reverse bias widens it."
+    },
+    {
+      "id": "2-1",
+      "title": "The Diode",
+      "summary": "Diodes are normally operated in forward-bias or reverse-bias regions, not in reverse breakdown (except for special-purpose diodes like zeners)."
+    },
+    {
+      "id": "2-2",
+      "title": "V-I Characteristic of a Diode",
+      "summary": "The V-I curve plots diode current vs. voltage across the diode, capturing forward, reverse, and breakdown behavior."
+    },
+    {
+      "id": "2-4",
+      "title": "Half-Wave Rectifier",
+      "summary": "A single diode that conducts only during one half of the input cycle, producing pulsating DC output."
+    },
+    {
+      "id": "2-6",
+      "title": "Power Supply Filters and Regulators",
+      "summary": "Filter capacitor smooths rectifier output by reducing ripple (V_r ≈ I_load / (f·C) — larger C means smaller ripple); regulator maintains a constant output voltage despite input or load changes."
+    },
+    {
+      "id": "3-1",
+      "title": "The Zener Diode",
+      "summary": "Designed to operate in the reverse-breakdown region as a voltage reference; forward-biased zener behaves like a normal silicon diode (~0.7 V drop)."
+    },
+    {
+      "id": "4-1",
+      "title": "BJT Structure",
+      "summary": "Heavily doped emitter and lightly doped (physically larger) collector — terminals are NOT interchangeable despite being the same carrier type."
+    },
+    {
+      "id": "4-4",
+      "title": "BJT as Amplifier",
+      "summary": "Voltage gain of a common-emitter amplifier: A_v = R_C / r'_e."
+    }
+  ],
+  "questions": [
+    {
+      "id": "chM_tf01",
+      "category": "True/False",
+      "section": "2-6",
+      "text": "In a rectifier circuit, a smaller filter capacitor reduces the ripple.",
+      "answer": false,
+      "explanation": "It's the opposite — a LARGER filter capacitor reduces ripple. Ripple voltage is approximately V_r ≈ I_load / (f · C), so larger capacitance means slower discharge between peaks and less voltage variation."
+    },
+    {
+      "id": "chM_tf02",
+      "category": "True/False",
+      "section": "2-6",
+      "text": "The output voltage of a filtered rectifier always has some ripple voltage.",
+      "answer": true,
+      "explanation": "A filter cannot completely eliminate ripple — only reduce it. Some residual ripple always remains because the capacitor must discharge slightly between charging cycles. Ripple can be minimized but never zeroed out."
+    },
+    {
+      "id": "chM_tf03",
+      "category": "True/False",
+      "section": "1-5",
+      "text": "Reverse breakdown occurs when the reverse-bias voltage of a diode equals or exceeds the barrier potential of the pn junction of a diode.",
+      "answer": false,
+      "explanation": "Reverse breakdown occurs at the BREAKDOWN voltage (V_BR), which is much greater than the barrier potential. The barrier potential (~0.7 V for silicon) is what must be overcome in FORWARD bias, not reverse."
+    },
+    {
+      "id": "chM_tf04",
+      "category": "True/False",
+      "section": "1-5",
+      "text": "Diffusion is the movement of the holes (majority carriers) in the n-region across the pn junction and into the p region.",
+      "answer": false,
+      "explanation": "Holes are majority carriers in the P-region, not the N-region. In the N-region, free electrons are the majority carriers. At the junction, electrons diffuse from N→P and holes diffuse from P→N."
+    },
+    {
+      "id": "chM_tf05",
+      "category": "True/False",
+      "section": "2-4",
+      "text": "The diode in a half-wave rectifier conducts for half the input cycle.",
+      "answer": true,
+      "explanation": "The diode is forward-biased and conducts during one half of the input AC cycle (typically the positive half), and reverse-biased during the other half. This is exactly why it's called 'half-wave.'"
+    },
+    {
+      "id": "chM_tf06",
+      "category": "True/False",
+      "section": "1-1",
+      "text": "A positive ion is a previously neutral atom that has lost a valence electron and has a net positive charge.",
+      "answer": true,
+      "explanation": "When a neutral atom loses a valence electron, it has more protons than electrons, leaving a net positive charge. This is the textbook definition of a positive ion (cation)."
+    },
+    {
+      "id": "chM_tf07",
+      "category": "True/False",
+      "section": "1-5",
+      "text": "To reverse-bias a diode, the positive side of an external bias voltage is applied to the n region and the negative side to the p region.",
+      "answer": true,
+      "explanation": "Reverse bias: (+) to cathode (N region), (–) to anode (P region). This pulls majority carriers away from the junction, widening the depletion region and blocking conduction (until breakdown)."
+    },
+    {
+      "id": "chM_tf08",
+      "category": "True/False",
+      "section": "3-1",
+      "text": "The voltage that appears across a zener diode when it is forward-biased is approximately 0.7 V, just like a rectifier diode.",
+      "answer": true,
+      "explanation": "Forward-biased, a zener diode behaves identically to a regular silicon diode (~0.7 V drop). Its special voltage-regulating behavior occurs only in REVERSE breakdown, where it maintains the zener voltage V_Z."
+    },
+    {
+      "id": "chM_tf09",
+      "category": "True/False",
+      "section": "1-3",
+      "text": "Hole current occurs at either the valence level or conduction level.",
+      "answer": false,
+      "explanation": "Hole current occurs ONLY at the valence band level — it's the apparent motion of holes as valence electrons fill adjacent vacancies. Free electron current occurs at the conduction band level. Holes do not exist as carriers in the conduction band."
+    },
+    {
+      "id": "chM_tf10",
+      "category": "True/False",
+      "section": "1-1",
+      "text": "A valence electron is an electron that has broken free of its parent atom.",
+      "answer": false,
+      "explanation": "That definition describes a FREE electron. A valence electron is an electron in the outermost shell that is still bound (loosely) to its parent atom. A valence electron can become a free electron after absorbing enough energy."
+    },
+    {
+      "id": "chM_tf11",
+      "category": "True/False",
+      "section": "1-2",
+      "text": "Covalent bonds are formed by the sharing of free electrons and holes with neighboring atoms.",
+      "answer": false,
+      "explanation": "Covalent bonds form by sharing VALENCE electrons (not free electrons or holes) with neighboring atoms. Free electrons have already escaped the atom, and holes are absences of electrons — neither can participate in covalent bonding."
+    },
+    {
+      "id": "chM_tf12",
+      "category": "True/False",
+      "section": "1-2",
+      "text": "Conductors such as copper have one valence electron.",
+      "answer": true,
+      "explanation": "Copper, silver, and gold each have a single, loosely held valence electron that detaches easily to become a free electron. This is why these metals are excellent conductors of electricity."
+    },
+    {
+      "id": "chM_tf13",
+      "category": "True/False",
+      "section": "1-2",
+      "text": "Insulators have essentially no free electrons and do not conduct current.",
+      "answer": true,
+      "explanation": "Insulators have a very large energy gap between valence and conduction bands, so virtually no electrons gain enough energy to become free under normal conditions. With no charge carriers, no significant current flows."
+    },
+    {
+      "id": "chM_tf14",
+      "category": "True/False",
+      "section": "1-3",
+      "text": "Two types of current in a diode are electron and hole.",
+      "answer": true,
+      "explanation": "In any semiconductor (including diodes), current is carried by free electrons (conduction band) and holes (valence band). Across a forward-biased PN junction, electrons flow N→P and holes flow P→N — both contribute to total current."
+    },
+    {
+      "id": "chM_tf15",
+      "category": "True/False",
+      "section": "1-5",
+      "text": "The depletion region for forward bias is much wider than for reverse bias.",
+      "answer": false,
+      "explanation": "It's reversed — the depletion region is much NARROWER under forward bias and WIDER under reverse bias. Forward bias pushes majority carriers toward the junction (narrowing it); reverse bias pulls them away (widening it)."
+    },
+    {
+      "id": "chM_tf16",
+      "category": "True/False",
+      "section": "4-1",
+      "text": "The difference in doping levels of the collector and emitter on a BJT makes the two terminals interchangable except that holes will flow from emitter to collector instead of electrons.",
+      "answer": false,
+      "explanation": "The collector and emitter are NOT interchangeable. The emitter is heavily doped, while the collector is lightly doped and physically larger to dissipate heat. Swapping them severely degrades β and the transistor's power-handling capability."
+    },
+    {
+      "id": "chM_tf17",
+      "category": "True/False",
+      "section": "2-2",
+      "text": "The V-I characteristic curve shows the diode current as a function of voltage across the diode.",
+      "answer": true,
+      "explanation": "The V-I curve plots diode current (I_D) on the y-axis vs. voltage across the diode (V_D) on the x-axis. It captures the diode's forward conduction, reverse blocking, and breakdown behaviors graphically."
+    },
+    {
+      "id": "chM_tf18",
+      "category": "True/False",
+      "section": "1-4",
+      "text": "A pentavalent atom has three valence electrons.",
+      "answer": false,
+      "explanation": "PENTA = 5, so a pentavalent atom has FIVE valence electrons (e.g., phosphorus, arsenic, antimony — used as N-type dopants). A TRIvalent atom has three valence electrons (e.g., boron, gallium — used as P-type dopants)."
+    },
+    {
+      "id": "chM_tf19",
+      "category": "True/False",
+      "section": "3-1",
+      "text": "Zener diodes are operated in the reverse-breakdown region.",
+      "answer": true,
+      "explanation": "Zener diodes are specifically designed to operate in reverse breakdown, where they maintain a nearly constant voltage (V_Z) across a wide range of currents. This makes them ideal for voltage regulation."
+    },
+    {
+      "id": "chM_tf20",
+      "category": "True/False",
+      "section": "4-4",
+      "text": "RC and r'e determine the voltage gain of half-wave rectifier.",
+      "answer": false,
+      "explanation": "R_C and r'_e determine the voltage gain of a BJT AMPLIFIER, where A_v = R_C / r'_e. A half-wave rectifier doesn't have voltage gain in the amplifier sense — it just converts AC into pulsating DC."
+    },
+    {
+      "id": "chM_tf21",
+      "category": "True/False",
+      "section": "1-4",
+      "text": "The majority carrier in an n-type semiconductor is the free electron.",
+      "answer": true,
+      "explanation": "In N-type material, the pentavalent dopant donates extra free electrons, making them the majority carriers (and holes the minority carriers). In P-type material the opposite is true: holes are majority, electrons are minority."
+    },
+    {
+      "id": "chM_st01",
+      "category": "Self-Test",
+      "section": "0-1",
+      "text": "How does the voltage (V) in a circuit change if the resistance (R) is doubled while keeping the current (I) constant?",
+      "options": [
+        "V doubles",
+        "V remains the same",
+        "V is halved",
+        "V quadruples"
+      ],
+      "answer": 0,
+      "explanation": "From Ohm's law: V = I × R. With I held constant, V is directly proportional to R, so doubling R doubles V."
+    },
+    {
+      "id": "chM_st02",
+      "category": "Self-Test",
+      "section": "1-2",
+      "text": "The energy band in which free electrons exist is the",
+      "options": [
+        "first band",
+        "second band",
+        "conduction band",
+        "valence band"
+      ],
+      "answer": 2,
+      "explanation": "Free electrons have absorbed enough energy to escape the valence band and exist in the conduction band, where they can drift under an applied electric field and produce electron current."
+    },
+    {
+      "id": "chM_st03",
+      "category": "Self-Test",
+      "section": "2-6",
+      "text": "What is the primary function of a filter in a power supply?",
+      "options": [
+        "To convert AC into pulsating DC",
+        "To maintain a constant output voltage under varying conditions",
+        "To reduce the variation of the output voltage from a rectifier",
+        "To add a DC level to an AC voltage"
+      ],
+      "answer": 2,
+      "explanation": "The filter smooths the pulsating DC output of the rectifier by reducing ripple. (Converting AC to pulsating DC is the rectifier's job; maintaining a constant output is the regulator's job.)"
+    },
+    {
+      "id": "chM_st04",
+      "category": "Self-Test",
+      "section": "1-3",
+      "text": "The current in a semiconductor is produced by",
+      "options": [
+        "electrons only",
+        "holes only",
+        "negative ions",
+        "both electrons and holes"
+      ],
+      "answer": 3,
+      "explanation": "Semiconductors have two charge carriers: free electrons (conduction band) and holes (valence band). Both contribute to total current — this is the defining feature distinguishing semiconductors from pure conductors."
+    },
+    {
+      "id": "chM_st05",
+      "category": "Self-Test",
+      "section": "2-1",
+      "text": "A diode is normally operated in",
+      "options": [
+        "reverse breakdown",
+        "the forward-bias region",
+        "the reverse-bias region",
+        "either (b) or (c)"
+      ],
+      "answer": 3,
+      "explanation": "Standard rectifier diodes are operated in either the forward-bias region (conducting) or the reverse-bias region (blocking). Reverse breakdown is normally avoided since it would destroy a rectifier diode (zeners are the special-case exception)."
+    },
+    {
+      "id": "chM_st06",
+      "category": "Self-Test",
+      "section": "2-6",
+      "text": "Which component in the voltage regulation process is directly responsible for maintaining the output voltage to a constant level regardless of changes in input voltage or load conditions?",
+      "options": [
+        "Transformer",
+        "Rectifier",
+        "Regulator",
+        "Filter"
+      ],
+      "answer": 2,
+      "explanation": "The regulator maintains a constant output voltage despite variations in input voltage or load. (Transformer steps voltage; rectifier converts AC→pulsating DC; filter smooths ripple.)"
+    },
+    {
+      "id": "chM_st07",
+      "category": "Self-Test",
+      "section": "1-3",
+      "text": "Each atom in a silicon crystal has",
+      "options": [
+        "four valence electrons",
+        "four conduction electrons",
+        "eight valence electrons, four of its own and four shared",
+        "no valence electrons because all are shared with other atoms"
+      ],
+      "answer": 2,
+      "explanation": "An isolated silicon atom has 4 valence electrons. In a crystal lattice, each atom shares one electron with each of its 4 neighbors via covalent bonding, giving each atom an effective 8 valence electrons (4 of its own + 4 shared)."
+    },
+    {
+      "id": "chM_st08",
+      "category": "Self-Test",
+      "section": "0-1",
+      "text": "Given a circuit with three voltage sources of 12V, -4V, and 9V arranged in a closed loop with a prescribed direction, using Kirchhoff's Voltage Law (KVL), what should be the algebraic sum of voltages around this loop?",
+      "options": [
+        "17 V",
+        "0 V",
+        "21 V",
+        "-9 V"
+      ],
+      "answer": 1,
+      "explanation": "Kirchhoff's Voltage Law states that the algebraic sum of all voltages around any closed loop equals zero — always, regardless of the individual source values. This is a direct consequence of energy conservation."
+    },
+    {
+      "id": "chM_st09",
+      "category": "Self-Test",
+      "section": "1-5",
+      "text": "What effect does forward bias have on the depletion region in a p-n junction semiconductor?",
+      "options": [
+        "It widens the depletion region.",
+        "It narrows the depletion region.",
+        "It remains unchanged.",
+        "It inverses the polarity of the region."
+      ],
+      "answer": 1,
+      "explanation": "Forward bias pushes majority carriers toward the junction, neutralizing some of the depletion region's ions. This narrows the depletion region and reduces the barrier potential, allowing current to flow."
+    },
+    {
+      "id": "chM_st10",
+      "category": "Self-Test",
+      "section": "1-1",
+      "text": "The atomic number of silicon is",
+      "options": [
+        "8",
+        "2",
+        "4",
+        "14"
+      ],
+      "answer": 3,
+      "explanation": "Silicon (Si) has atomic number 14 — 14 protons and 14 electrons. Its electron configuration is 2-8-4: two in the inner shell, eight in the second, and four valence electrons in the outer shell."
+    }
+  ]
+}
