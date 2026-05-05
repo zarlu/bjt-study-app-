@@ -1,0 +1,440 @@
+{
+  "id": "ch1",
+  "number": 1,
+  "title": "Chapter 1 — Introduction to Semiconductors",
+  "shortTitle": "Intro",
+  "icon": "⚛️",
+  "sections": [
+    {
+      "id": "1-1",
+      "title": "The Atom",
+      "summary": "Atomic structure: nucleus (protons + neutrons) at the center, electrons orbiting in shells, valence electrons in the outermost shell, and ions formed when valence electrons are gained or lost."
+    },
+    {
+      "id": "1-2",
+      "title": "Materials Used in Electronics",
+      "summary": "Conductors, insulators, and semiconductors compared. Energy bands and the band gap (measured in eV — varies with temperature). Silicon (Z=14, dominant) vs. germanium (Z=32). Atoms bond by sharing valence electrons in covalent bonds, with each silicon atom effectively seeing 8 valence electrons (4 of its own + 4 shared)."
+    },
+    {
+      "id": "1-3",
+      "title": "Current in Semiconductors",
+      "summary": "Thermal energy frees valence electrons, generating electron-hole pairs (EHPs). Recombination is the reverse — a free electron falling back into a hole. Current is carried by BOTH free electrons (in the conduction band) AND holes (apparent motion in the valence band)."
+    },
+    {
+      "id": "1-4",
+      "title": "N-Type and P-Type Semiconductors",
+      "summary": "Doping = adding impurity atoms to intrinsic silicon. Pentavalent (5 valence e⁻, e.g. phosphorus) → n-type, free electrons are majority carriers. Trivalent (3 valence e⁻, e.g. boron) → p-type, holes are majority carriers. The opposite-type carriers are minority carriers and are thermally produced."
+    },
+    {
+      "id": "1-5",
+      "title": "The PN Junction",
+      "summary": "A pn junction is the boundary inside a single crystal between p-type and n-type material. Diffusion of carriers across the boundary, followed by recombination and ionization of the now-uncompensated dopant atoms, produces the depletion region — a layer of fixed positive and negative ions with no majority carriers — and a barrier potential (~0.7 V for silicon at 25°C)."
+    }
+  ],
+  "questions": [
+    {
+      "id": "ch1_tf01",
+      "category": "True/False",
+      "section": "1-1",
+      "text": "An atom is the smallest particle in an element.",
+      "answer": true,
+      "explanation": "True. An atom is the smallest particle that retains the characteristics of an element. Subatomic particles (protons, neutrons, electrons) exist, but they don't carry the element's identity — only the assembled atom does."
+    },
+    {
+      "id": "ch1_tf02",
+      "category": "True/False",
+      "section": "1-1",
+      "text": "An electron is a negatively charged particle.",
+      "answer": true,
+      "explanation": "True. The electron carries one elementary unit of negative charge (−1.6 × 10⁻¹⁹ C)."
+    },
+    {
+      "id": "ch1_tf03",
+      "category": "True/False",
+      "section": "1-1",
+      "text": "An atom is made up of electrons, protons, and neutrons.",
+      "answer": true,
+      "explanation": "True. Protons (+) and neutrons (neutral) form the nucleus; electrons (−) orbit the nucleus in shells. (Hydrogen-1 is the lone exception with no neutron, but the general structure holds for every atom relevant to semiconductor work.)"
+    },
+    {
+      "id": "ch1_tf04",
+      "category": "True/False",
+      "section": "1-1",
+      "text": "Electrons are part of the nucleus of an atom.",
+      "answer": false,
+      "explanation": "False. The nucleus contains only protons and neutrons. Electrons occupy shells (orbits) around the nucleus — they're not inside it."
+    },
+    {
+      "id": "ch1_tf05",
+      "category": "True/False",
+      "section": "1-1",
+      "text": "Valence electrons exist in the outer shell of an atom.",
+      "answer": true,
+      "explanation": "True — that's literally the definition. Valence electrons are the electrons in the outermost (highest-numbered) shell, and they're the ones that participate in bonding and conduction."
+    },
+    {
+      "id": "ch1_tf06",
+      "category": "True/False",
+      "section": "1-2",
+      "text": "Semiconductor crystals are formed by the bonding of atoms.",
+      "answer": true,
+      "explanation": "True. In a silicon (or germanium) crystal, each atom shares its 4 valence electrons with 4 neighboring atoms via covalent bonds, locking the lattice into place."
+    },
+    {
+      "id": "ch1_tf07",
+      "category": "True/False",
+      "section": "1-2",
+      "text": "Pure silicon is a good conductor.",
+      "answer": false,
+      "explanation": "False. Pure (intrinsic) silicon has very few free carriers at room temperature — almost all valence electrons are tied up in covalent bonds. That's why it's classified as a semiconductor (between conductor and insulator) and why we dope it to make it useful."
+    },
+    {
+      "id": "ch1_tf08",
+      "category": "True/False",
+      "section": "1-5",
+      "text": "A pn junction is formed from silicon when both p and n materials are used on opposite sides of a crystal.",
+      "answer": true,
+      "explanation": "True. A pn junction is exactly that — the boundary inside a single crystal where one side is doped p-type and the other is doped n-type."
+    },
+    {
+      "id": "ch1_tf09",
+      "category": "True/False",
+      "section": "1-4",
+      "text": "The p and n regions are formed by a process called ionization.",
+      "answer": false,
+      "explanation": "False. The p and n regions are formed by DOPING — adding trivalent (p) or pentavalent (n) impurity atoms to intrinsic silicon. Ionization happens later, in the depletion region of a pn junction (when dopant atoms become fixed ions after losing their majority carriers)."
+    },
+    {
+      "id": "ch1_tf10",
+      "category": "True/False",
+      "section": "1-2",
+      "text": "The band gap in a pn junction is measured in ohms.",
+      "answer": false,
+      "explanation": "False. The band gap is an ENERGY — the energy required to lift a valence electron into the conduction band — and is measured in electron volts (eV). For silicon it's about 1.12 eV. Ohms measure resistance, which is a totally different quantity."
+    },
+    {
+      "id": "ch1_tf11",
+      "category": "True/False",
+      "section": "1-2",
+      "text": "The band gap can vary depending on temperature.",
+      "answer": true,
+      "explanation": "True. The band gap shrinks slightly as temperature rises (for silicon, from ~1.17 eV at 0 K to ~1.12 eV at 300 K). This is one reason intrinsic carrier concentration grows so quickly with temperature."
+    },
+    {
+      "id": "ch1_st01",
+      "category": "Self-Test",
+      "section": "1-1",
+      "text": "Every known element has",
+      "options": [
+        "the same type of atoms",
+        "the same number of atoms",
+        "a unique type of atom",
+        "several different types of atoms"
+      ],
+      "answer": 2,
+      "explanation": "Each element is defined by its atomic number — the number of protons in its nucleus. That makes every element's atoms distinct from every other element's. Hydrogen atoms differ from carbon atoms differ from silicon atoms."
+    },
+    {
+      "id": "ch1_st02",
+      "category": "Self-Test",
+      "section": "1-1",
+      "text": "An atom consists of",
+      "options": [
+        "one nucleus and only one electron",
+        "one nucleus and one or more electrons",
+        "protons, electrons, and neutrons",
+        "answers (b) and (c)"
+      ],
+      "answer": 3,
+      "explanation": "Both descriptions are correct. Atoms have one nucleus with one or more orbiting electrons, AND that nucleus is built from protons and neutrons. So (d) — both (b) and (c) — captures the full picture."
+    },
+    {
+      "id": "ch1_st03",
+      "category": "Self-Test",
+      "section": "1-1",
+      "text": "The nucleus of an atom is made up of",
+      "options": [
+        "protons and neutrons",
+        "electrons",
+        "electrons and protons",
+        "electrons and neutrons"
+      ],
+      "answer": 0,
+      "explanation": "The nucleus contains only protons (+) and neutrons (neutral). Electrons are NOT in the nucleus — they orbit it in shells. Any option containing 'electrons' is wrong."
+    },
+    {
+      "id": "ch1_st04",
+      "category": "Self-Test",
+      "section": "1-1",
+      "text": "Valence electrons are",
+      "options": [
+        "in the closest orbit to the nucleus",
+        "in various orbits around the nucleus",
+        "in the most distant orbit from the nucleus",
+        "not associated with a particular atom"
+      ],
+      "answer": 2,
+      "explanation": "Valence electrons live in the outermost (highest-numbered, most distant) shell. Their distance from the nucleus is exactly why they're the loosest-bound — and the ones available for bonding and conduction."
+    },
+    {
+      "id": "ch1_st05",
+      "category": "Self-Test",
+      "section": "1-1",
+      "text": "A positive ion is formed when",
+      "options": [
+        "a valence electron breaks away from the atom",
+        "there are more holes than electrons in the outer orbit",
+        "two atoms bond together",
+        "an atom gains an extra valence electron"
+      ],
+      "answer": 0,
+      "explanation": "Lose an electron → net positive charge → positive ion (cation). Gain an electron → net negative charge → negative ion (anion). Option (d) describes how a NEGATIVE ion forms, not a positive one."
+    },
+    {
+      "id": "ch1_st06",
+      "category": "Self-Test",
+      "section": "1-2",
+      "text": "The most widely used semiconductive material in electronic devices is",
+      "options": ["germanium", "carbon", "copper", "silicon"],
+      "answer": 3,
+      "explanation": "Silicon dominates — it's abundant, has a usable band gap (~1.12 eV), grows excellent native oxide (SiO₂) for insulation, and tolerates higher temperatures than germanium. Germanium was used in early devices but was largely displaced. Copper is a conductor, not a semiconductor."
+    },
+    {
+      "id": "ch1_st07",
+      "category": "Self-Test",
+      "section": "1-2",
+      "text": "The difference between an insulator and a semiconductor is",
+      "options": [
+        "a wider energy gap between the valence band and the conduction band",
+        "the number of free electrons",
+        "the atomic structure",
+        "answers (a), (b), and (c)"
+      ],
+      "answer": 3,
+      "explanation": "All three are real differences. Insulators have a much wider band gap, far fewer free electrons at room temperature, and a different atomic/lattice structure than semiconductors."
+    },
+    {
+      "id": "ch1_st08",
+      "category": "Self-Test",
+      "section": "1-2",
+      "text": "The energy band in which free electrons exist is the",
+      "options": ["first band", "second band", "conduction band", "valence band"],
+      "answer": 2,
+      "explanation": "Electrons in the valence band are bound to atoms. Once an electron gains enough energy to jump the band gap, it enters the conduction band — that's where it's free to move and contribute to current."
+    },
+    {
+      "id": "ch1_st09",
+      "category": "Self-Test",
+      "section": "1-2",
+      "text": "In a semiconductor crystal, the atoms are held together by",
+      "options": [
+        "the interaction of valence electrons",
+        "forces of attraction",
+        "covalent bonds",
+        "answers (a), (b), and (c)"
+      ],
+      "answer": 3,
+      "explanation": "All three describe the same physical reality from different angles: covalent bonds are formed by the sharing/interaction of valence electrons, and that sharing creates the attractive force that holds the lattice together."
+    },
+    {
+      "id": "ch1_st10",
+      "category": "Self-Test",
+      "section": "1-2",
+      "text": "The atomic number of silicon is",
+      "options": ["8", "2", "4", "14"],
+      "answer": 3,
+      "explanation": "Silicon's atomic number is 14 — meaning 14 protons and (in the neutral atom) 14 electrons, with the configuration 1s² 2s² 2p⁶ 3s² 3p². Don't confuse 14 (atomic number) with 4 (number of valence electrons) — both are silicon facts but they answer different questions."
+    },
+    {
+      "id": "ch1_st11",
+      "category": "Self-Test",
+      "section": "1-2",
+      "text": "The atomic number of germanium is",
+      "options": ["8", "2", "4", "32"],
+      "answer": 3,
+      "explanation": "Germanium has 32 protons. Like silicon, it has 4 valence electrons (Group IV of the periodic table), but its atomic number is 32, not 4."
+    },
+    {
+      "id": "ch1_st12",
+      "category": "Self-Test",
+      "section": "1-2",
+      "text": "The valence shell in a silicon atom has the number designation of",
+      "options": ["0", "1", "2", "3"],
+      "answer": 3,
+      "explanation": "Silicon's electrons fill shell 1 (2 electrons), shell 2 (8 electrons), and shell 3 (4 electrons). The outermost — the valence shell — is shell number 3. Watch the wording: this is asking for the SHELL number, not the count of valence electrons (which is 4)."
+    },
+    {
+      "id": "ch1_st13",
+      "category": "Self-Test",
+      "section": "1-2",
+      "text": "Each atom in a silicon crystal has",
+      "options": [
+        "four valence electrons",
+        "four conduction electrons",
+        "eight valence electrons, four of its own and four shared",
+        "no valence electrons because all are shared with other atoms"
+      ],
+      "answer": 2,
+      "explanation": "An isolated silicon atom has 4 valence electrons. In the CRYSTAL, each atom shares 4 of its own with neighbors AND has 4 shared in from neighbors via covalent bonds — effectively 8 around each atom, completing the outer shell. That's the key to the lattice's stability."
+    },
+    {
+      "id": "ch1_st14",
+      "category": "Self-Test",
+      "section": "1-3",
+      "text": "Electron-hole pairs are produced by",
+      "options": ["recombination", "thermal energy", "ionization", "doping"],
+      "answer": 1,
+      "explanation": "Heat (thermal energy) gives a valence electron enough energy to jump the band gap into the conduction band — leaving behind a hole. The electron + hole together form an electron-hole pair (EHP). Recombination is the opposite process; doping adds impurities; ionization happens at the depletion region."
+    },
+    {
+      "id": "ch1_st15",
+      "category": "Self-Test",
+      "section": "1-3",
+      "text": "Recombination is when",
+      "options": [
+        "an electron falls into a hole",
+        "a positive and a negative ion bond together",
+        "a valence electron becomes a conduction electron",
+        "a crystal is formed"
+      ],
+      "answer": 0,
+      "explanation": "Recombination = a free (conduction-band) electron falls back into a hole in the valence band, releasing energy. It's the reverse of EHP generation. (c) describes EHP generation — that's what produces a pair, not what destroys one."
+    },
+    {
+      "id": "ch1_st16",
+      "category": "Self-Test",
+      "section": "1-3",
+      "text": "The current in a semiconductor is produced by",
+      "options": [
+        "electrons only",
+        "holes only",
+        "negative ions",
+        "both electrons and holes"
+      ],
+      "answer": 3,
+      "explanation": "Semiconductors are unique in having TWO types of charge carriers. Free electrons drift in the conduction band; holes drift in the valence band (as valence electrons hop from atom to atom, the hole appears to move the opposite way). Both contribute to current — this is why semiconductor physics is so much richer than conductor physics."
+    },
+    {
+      "id": "ch1_st17",
+      "category": "Self-Test",
+      "section": "1-4",
+      "text": "In an intrinsic semiconductor,",
+      "options": [
+        "there are no free electrons",
+        "the free electrons are thermally produced",
+        "there are only holes",
+        "there are as many electrons as there are holes",
+        "answers (b) and (d)"
+      ],
+      "answer": 4,
+      "explanation": "Intrinsic = pure, undoped. Whatever free carriers exist come purely from thermal generation of EHPs — and because each thermal event produces one electron AND one hole, the counts are exactly equal. Both (b) and (d) are correct, so (e) is the answer. Note this is the only 5-option question in the set."
+    },
+    {
+      "id": "ch1_st18",
+      "category": "Self-Test",
+      "section": "1-4",
+      "text": "The process of adding an impurity to an intrinsic semiconductor is called",
+      "options": ["doping", "recombination", "atomic modification", "ionization"],
+      "answer": 0,
+      "explanation": "Doping is the deliberate introduction of impurity atoms (pentavalent for n-type, trivalent for p-type) to control conductivity. This is the foundational process behind every diode and transistor."
+    },
+    {
+      "id": "ch1_st19",
+      "category": "Self-Test",
+      "section": "1-4",
+      "text": "A trivalent impurity is added to silicon to create",
+      "options": [
+        "germanium",
+        "a p-type semiconductor",
+        "an n-type semiconductor",
+        "a depletion region"
+      ],
+      "answer": 1,
+      "explanation": "Trivalent = 3 valence electrons (e.g., boron, aluminum, gallium). Bonded into silicon's 4-bond lattice, each impurity is one electron short — that missing electron position is a hole. Many holes → p-type. Mnemonic: tri-valent → 3 → short an electron → Positive (p-type)."
+    },
+    {
+      "id": "ch1_st20",
+      "category": "Self-Test",
+      "section": "1-4",
+      "text": "The purpose of a pentavalent impurity is to",
+      "options": [
+        "reduce the conductivity of silicon",
+        "increase the number of holes",
+        "increase the number of free electrons",
+        "create minority carriers"
+      ],
+      "answer": 2,
+      "explanation": "Pentavalent = 5 valence electrons (e.g., phosphorus, arsenic, antimony). Four of them bond into the silicon lattice; the fifth has nowhere to bond and becomes a free electron. Many extra free electrons → n-type, with electrons as the majority carriers."
+    },
+    {
+      "id": "ch1_st21",
+      "category": "Self-Test",
+      "section": "1-4",
+      "text": "The majority carriers in an n-type semiconductor are",
+      "options": [
+        "holes",
+        "valence electrons",
+        "conduction electrons",
+        "protons"
+      ],
+      "answer": 2,
+      "explanation": "n-type → 'n' for negative → free conduction-band electrons dominate. They're called CONDUCTION electrons (not valence electrons) because they're already in the conduction band, free to move. Holes still exist (thermally produced) but are the minority. Protons never move — they stay in nuclei."
+    },
+    {
+      "id": "ch1_st22",
+      "category": "Self-Test",
+      "section": "1-4",
+      "text": "Holes in an n-type semiconductor are",
+      "options": [
+        "minority carriers that are thermally produced",
+        "minority carriers that are produced by doping",
+        "majority carriers that are thermally produced",
+        "majority carriers that are produced by doping"
+      ],
+      "answer": 0,
+      "explanation": "In n-type, doping creates extra electrons — NOT holes. Any holes present come from thermal generation of EHPs and are vastly outnumbered by the doping-produced electrons. So holes are minority carriers AND they're thermal in origin. (Symmetric statement for p-type: electrons there are minority + thermally produced.)"
+    },
+    {
+      "id": "ch1_st23",
+      "category": "Self-Test",
+      "section": "1-5",
+      "text": "A pn junction is formed by",
+      "options": [
+        "the recombination of electrons and holes",
+        "ionization",
+        "the boundary of a p-type and an n-type material",
+        "the collision of a proton and a neutron"
+      ],
+      "answer": 2,
+      "explanation": "A pn junction IS the physical boundary inside a single crystal where one side has been doped p-type and the other n-type. Recombination and ionization happen AT the junction (in the depletion region) but they don't form the junction itself — they're consequences of it existing."
+    },
+    {
+      "id": "ch1_st24",
+      "category": "Self-Test",
+      "section": "1-5",
+      "text": "The depletion region is created by",
+      "options": [
+        "ionization",
+        "diffusion",
+        "recombination",
+        "answers (a), (b), and (c)"
+      ],
+      "answer": 3,
+      "explanation": "All three processes happen in sequence: (1) free electrons diffuse from n→p and holes diffuse from p→n (DIFFUSION); (2) they meet near the junction and combine (RECOMBINATION); (3) this leaves dopant atoms with no compensating carrier — fixed positive ions on the n side, fixed negative ions on the p side (IONIZATION). The combined result is the depletion region."
+    },
+    {
+      "id": "ch1_st25",
+      "category": "Self-Test",
+      "section": "1-5",
+      "text": "The depletion region consists of",
+      "options": [
+        "nothing but minority carriers",
+        "positive and negative ions",
+        "no majority carriers",
+        "answers (b) and (c)"
+      ],
+      "answer": 3,
+      "explanation": "Both (b) and (c) describe the same picture: majority carriers diffused away and recombined, leaving behind only the immobile ionized dopant atoms (positive ions on the n side, negative ions on the p side). The region is 'depleted' of mobile majority carriers — hence the name."
+    }
+  ]
+}

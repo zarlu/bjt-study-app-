@@ -3,13 +3,13 @@
 //   2. Import it below
 //   3. Add it to the CHAPTERS array (in the order you want it to appear)
 // That's it — the rest of the app picks it up automatically.
-
+import chapter1 from './chapter1.json'
 import chapter2 from './chapter2.json';
 import chapter3 from './chapter3.json';
 import chapter4 from './chapter4.json';
 import chapter8 from './chapter8.json';
 
-export const CHAPTERS = [chapter2, chapter3, chapter4, chapter8];
+export const CHAPTERS = [chapter1, chapter2, chapter3, chapter4, chapter8];
 
 // Convenience helpers used by App.jsx
 export const ALL_QUESTIONS = CHAPTERS.flatMap(ch =>
