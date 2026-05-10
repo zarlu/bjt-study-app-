@@ -1,0 +1,1209 @@
+{
+  "id": "dsa",
+  "number": 99,
+  "title": "DSA — Time Complexities & Final Review",
+  "shortTitle": "DSA",
+  "icon": "🌳",
+  "sections": [
+    { "id": "dsa-1",  "title": "Asymptotic Notation & Algorithm Analysis", "summary": "Big O (upper bound), Big Omega (lower bound), Big Theta (tight bound), and common growth rates ordered slowest to fastest." },
+    { "id": "dsa-2",  "title": "Sorting Algorithm Complexities", "summary": "Bubble, Insertion, Merge, Quick, Heap (and Selection) — best, worst, average time and space. The two boundary cases to memorize: Merge/Heap always O(n log n); Quick is O(n²) worst but O(n log n) average." },
+    { "id": "dsa-3",  "title": "Searching Algorithms", "summary": "Linear search O(n) on any array; Binary search O(log n) but only on a sorted array. The sorted prerequisite is what gets people on exams." },
+    { "id": "dsa-4",  "title": "Linear Data Structures", "summary": "Array/vector access vs. insert, Stack (LIFO) push/pop, Queue (FIFO) enqueue/dequeue, Circular Queue front/rear wrap-around, Singly Linked List head/end insertion and deletion." },
+    { "id": "dsa-5",  "title": "Trees & BST", "summary": "Vocabulary (root, leaf, height, depth), tree types (full vs. complete vs. perfect binary trees), and BST insert/search/delete — worst case is O(n) when the tree degenerates into a list." },
+    { "id": "dsa-6",  "title": "Self-Balancing Trees", "summary": "AVL with its four rotation cases (LL, RR, LR, RL) and Red-Black with its five properties — both guarantee O(log n) for everything, but get there differently." },
+    { "id": "dsa-7",  "title": "Tree Traversals", "summary": "Preorder (root, L, R), Inorder (L, root, R — sorted for a BST), Postorder (L, R, root), and BFS / level-order (uses a queue). All four are O(n) time." },
+    { "id": "dsa-8",  "title": "Heaps", "summary": "Min/Max heap as a complete binary tree backed by an array. Insert and extract are O(log n), peek is O(1), build-heap is O(n) (not n log n — this is the trick question), heap sort is O(n log n) in every case." },
+    { "id": "dsa-9",  "title": "Graph Representations", "summary": "Adjacency Matrix uses O(V²) space and gives O(1) edge lookup; Adjacency List uses O(V+E) space and is faster for sparse graphs but slower for arbitrary edge lookup." },
+    { "id": "dsa-10", "title": "Graph Traversals (BFS / DFS)", "summary": "BFS uses a queue and visits by levels — finds shortest path in unweighted graphs. DFS uses a stack (or recursion) and dives deep — useful for cycle detection and topological sort. Both O(V+E) on adjacency lists." },
+    { "id": "dsa-11", "title": "Shortest Path Algorithms", "summary": "Dijkstra (greedy, fails on negative edges, O((V+E) log V) with a binary heap) vs. Bellman-Ford (DP, O(V·E), handles negative edges and detects negative cycles)." }
+  ],
+  "questions": [
+    {
+      "id": "dsa_tf01",
+      "category": "True/False",
+      "section": "dsa-1",
+      "text": "Big O notation describes the upper bound on an algorithm's growth rate.",
+      "answer": true,
+      "explanation": "Big O is the asymptotic upper bound. f(n) = O(g(n)) means f grows no faster than g times some constant for large n. It's typically used to express worst-case behavior, though formally it's a bound, not a case."
+    },
+    {
+      "id": "dsa_tf02",
+      "category": "True/False",
+      "section": "dsa-1",
+      "text": "Big Omega (Ω) notation describes the lower bound on an algorithm's growth rate.",
+      "answer": true,
+      "explanation": "Ω(g(n)) means the function grows at least as fast as g(n) for large n. It's often associated with best-case behavior, though again it's technically a bound, not a case."
+    },
+    {
+      "id": "dsa_tf03",
+      "category": "True/False",
+      "section": "dsa-1",
+      "text": "Big Theta (Θ) means the function is bounded both above and below by the same function (up to constant factors).",
+      "answer": true,
+      "explanation": "Θ(g(n)) means f(n) is both O(g(n)) AND Ω(g(n)). It's a tight bound — the function grows exactly like g(n) asymptotically."
+    },
+    {
+      "id": "dsa_tf04",
+      "category": "True/False",
+      "section": "dsa-1",
+      "text": "For large n, an O(log n) algorithm is faster than an O(n) algorithm.",
+      "answer": true,
+      "explanation": "The growth ordering is: O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!). Logarithmic crushes linear at scale — log₂(1,000,000) ≈ 20."
+    },
+    {
+      "id": "dsa_tf05",
+      "category": "True/False",
+      "section": "dsa-2",
+      "text": "Bubble sort runs in O(n log n) in the worst case.",
+      "answer": false,
+      "explanation": "Bubble sort is O(n²) in the worst case. It compares each pair of adjacent elements and may need n-1 passes, each doing up to n-1 comparisons → quadratic."
+    },
+    {
+      "id": "dsa_tf06",
+      "category": "True/False",
+      "section": "dsa-2",
+      "text": "Merge sort guarantees O(n log n) time regardless of the input ordering.",
+      "answer": true,
+      "explanation": "Merge sort always splits the array in half (log n levels) and merges in linear time at each level (n work per level), giving O(n log n) in best, worst, and average cases. This predictability is its main strength over quick sort."
+    },
+    {
+      "id": "dsa_tf07",
+      "category": "True/False",
+      "section": "dsa-2",
+      "text": "Quick sort's worst case is O(n log n).",
+      "answer": false,
+      "explanation": "Quick sort's worst case is O(n²) — it happens when the pivot consistently lands at an extreme (e.g., always the smallest or largest element), producing unbalanced partitions of size 0 and n-1. Average case IS O(n log n)."
+    },
+    {
+      "id": "dsa_tf08",
+      "category": "True/False",
+      "section": "dsa-2",
+      "text": "Heap sort runs in O(n log n) for best, worst, and average cases.",
+      "answer": true,
+      "explanation": "Heap sort first builds a heap in O(n), then performs n extract-max operations each costing O(log n), so the dominant term is n × log n = O(n log n). Like merge sort, it's not sensitive to input ordering."
+    },
+    {
+      "id": "dsa_tf09",
+      "category": "True/False",
+      "section": "dsa-3",
+      "text": "Binary search requires the input array to be sorted.",
+      "answer": true,
+      "explanation": "This is the defining prerequisite. Binary search relies on being able to discard half the array based on comparing the middle element — that only works if elements are in sorted order. Apply it to an unsorted array and the algorithm is wrong, not slow."
+    },
+    {
+      "id": "dsa_tf10",
+      "category": "True/False",
+      "section": "dsa-3",
+      "text": "Linear search runs in O(log n) in the worst case.",
+      "answer": false,
+      "explanation": "Linear search is O(n) in the worst case — it may need to examine every element. It's O(1) only in the best case (target is the first element)."
+    },
+    {
+      "id": "dsa_tf11",
+      "category": "True/False",
+      "section": "dsa-4",
+      "text": "Inserting at the head of a singly linked list takes O(1) time.",
+      "answer": true,
+      "explanation": "You allocate the new node, point its next to the current head, and update the head pointer — three constant-time operations. No traversal needed."
+    },
+    {
+      "id": "dsa_tf12",
+      "category": "True/False",
+      "section": "dsa-4",
+      "text": "Accessing the k-th element of a linked list takes O(1) time.",
+      "answer": false,
+      "explanation": "It's O(k) — you must walk from the head following next pointers k times. Linked lists lack random access; that's the price you pay for cheap insertion/deletion. Arrays are the opposite trade-off."
+    },
+    {
+      "id": "dsa_tf13",
+      "category": "True/False",
+      "section": "dsa-4",
+      "text": "A stack follows FIFO (first-in, first-out) order.",
+      "answer": false,
+      "explanation": "A stack is LIFO — last-in, first-out. The last item pushed is the first popped, like a stack of plates. Queues are FIFO."
+    },
+    {
+      "id": "dsa_tf14",
+      "category": "True/False",
+      "section": "dsa-4",
+      "text": "A queue follows FIFO (first-in, first-out) order.",
+      "answer": true,
+      "explanation": "Queues serve items in the order they arrived. Think of a line at a checkout: first in line is first served. Enqueue adds to the rear, dequeue removes from the front."
+    },
+    {
+      "id": "dsa_tf15",
+      "category": "True/False",
+      "section": "dsa-5",
+      "text": "Every leaf node in a binary tree has no children.",
+      "answer": true,
+      "explanation": "A leaf is defined as a node with zero children. Internal nodes have at least one child."
+    },
+    {
+      "id": "dsa_tf16",
+      "category": "True/False",
+      "section": "dsa-5",
+      "text": "In a complete binary tree, every level is fully filled except possibly the last, and the last level is filled from left to right.",
+      "answer": true,
+      "explanation": "That's the exact definition of a complete binary tree. This property is what lets heaps be stored compactly in an array with no holes."
+    },
+    {
+      "id": "dsa_tf17",
+      "category": "True/False",
+      "section": "dsa-5",
+      "text": "A perfect binary tree is also a complete binary tree.",
+      "answer": true,
+      "explanation": "A perfect tree has all internal nodes with two children AND all leaves at the same level — that satisfies completeness (every level fully filled, including the last). Perfect ⊂ Complete."
+    },
+    {
+      "id": "dsa_tf18",
+      "category": "True/False",
+      "section": "dsa-5",
+      "text": "Every full binary tree is a complete binary tree.",
+      "answer": false,
+      "explanation": "FULL means every node has 0 or 2 children (no nodes with exactly 1 child). COMPLETE means levels filled left-to-right. These are independent properties — a tree can be full but not complete (e.g., a deep node with 2 children while shallower positions are empty), or complete but not full (the last level has a node with 1 child)."
+    },
+    {
+      "id": "dsa_tf19",
+      "category": "True/False",
+      "section": "dsa-6",
+      "text": "An AVL tree guarantees O(log n) search, insert, and delete in the worst case.",
+      "answer": true,
+      "explanation": "AVL is self-balancing — after every insert/delete it rebalances via rotations to keep the height at O(log n). This makes all three operations worst-case logarithmic, unlike a plain BST which can degenerate to O(n)."
+    },
+    {
+      "id": "dsa_tf20",
+      "category": "True/False",
+      "section": "dsa-6",
+      "text": "A red-black tree allows two consecutive red nodes on any path from root to leaf.",
+      "answer": false,
+      "explanation": "Property 4 of red-black trees: if a node is red, both its children must be black. So you can never have a red node with a red parent — no two reds in a row."
+    },
+    {
+      "id": "dsa_tf21",
+      "category": "True/False",
+      "section": "dsa-7",
+      "text": "Inorder traversal of a binary search tree yields the nodes in sorted (ascending) order.",
+      "answer": true,
+      "explanation": "Inorder visits Left → Root → Right. Combined with the BST property (left < root < right), this produces nodes in ascending sorted order. This is one of the most-tested facts about BSTs."
+    },
+    {
+      "id": "dsa_tf22",
+      "category": "True/False",
+      "section": "dsa-10",
+      "text": "Breadth-first search (BFS) uses a stack as its primary data structure.",
+      "answer": false,
+      "explanation": "BFS uses a QUEUE. You enqueue neighbors and dequeue the next vertex to process — this naturally explores by levels. DFS is the one that uses a stack (or recursion, which is an implicit stack)."
+    },
+    {
+      "id": "dsa_tf23",
+      "category": "True/False",
+      "section": "dsa-10",
+      "text": "Depth-first search (DFS) uses a queue as its primary data structure.",
+      "answer": false,
+      "explanation": "DFS uses a STACK — either an explicit stack data structure or the implicit call stack via recursion. The LIFO order is what makes it go deep before backing up."
+    },
+    {
+      "id": "dsa_tf24",
+      "category": "True/False",
+      "section": "dsa-8",
+      "text": "A binary heap is always a complete binary tree.",
+      "answer": true,
+      "explanation": "By definition. The completeness property is what allows heaps to be stored as flat arrays with simple index arithmetic to find parents and children."
+    },
+    {
+      "id": "dsa_tf25",
+      "category": "True/False",
+      "section": "dsa-8",
+      "text": "Building a heap from an unsorted array of n elements takes O(n log n) time.",
+      "answer": false,
+      "explanation": "Building a heap is O(n), not O(n log n) — this is a famously counterintuitive result. The reason: most nodes are near the bottom and sift-down only a constant amount, so the total work sums to a geometric series bounded by 2n. The O(n log n) figure you might recall is for heap sort overall (build + n extractions)."
+    },
+    {
+      "id": "dsa_tf26",
+      "category": "True/False",
+      "section": "dsa-9",
+      "text": "An adjacency matrix uses O(V²) space regardless of how many edges the graph has.",
+      "answer": true,
+      "explanation": "The matrix is V×V, with a cell for every possible vertex pair. Whether the graph has 0 edges or V² edges, the matrix occupies V² cells — making it wasteful for sparse graphs."
+    },
+    {
+      "id": "dsa_tf27",
+      "category": "True/False",
+      "section": "dsa-9",
+      "text": "An adjacency list uses O(V + E) space.",
+      "answer": true,
+      "explanation": "One entry per vertex (O(V)), plus one entry per edge stored in the relevant vertex's list (O(E) total across all lists). For undirected graphs each edge appears twice but it's still O(E). Much more space-efficient than matrices for sparse graphs."
+    },
+    {
+      "id": "dsa_tf28",
+      "category": "True/False",
+      "section": "dsa-11",
+      "text": "Dijkstra's algorithm works correctly with negative edge weights.",
+      "answer": false,
+      "explanation": "Dijkstra fails on negative edges. Its greedy assumption — once a vertex is finalized, no shorter path exists — breaks down when a negative edge could later improve a finalized distance. Use Bellman-Ford for negative weights."
+    },
+    {
+      "id": "dsa_tf29",
+      "category": "True/False",
+      "section": "dsa-11",
+      "text": "Bellman-Ford can detect negative-weight cycles reachable from the source.",
+      "answer": true,
+      "explanation": "After V-1 relaxation passes, Bellman-Ford runs one more pass: if any distance still improves, a negative cycle exists. Dijkstra has no equivalent detection because it doesn't support negative weights at all."
+    },
+    {
+      "id": "dsa_tf30",
+      "category": "True/False",
+      "section": "dsa-11",
+      "text": "Bellman-Ford runs in O(V + E) time.",
+      "answer": false,
+      "explanation": "Bellman-Ford is O(V·E) — it runs V-1 relaxation passes, each examining all E edges. O(V+E) is the complexity of BFS/DFS, which doesn't compute weighted shortest paths."
+    },
+
+    {
+      "id": "dsa_cp01",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the WORST-case time complexity of Bubble Sort?",
+      "options": ["O(n)", "O(n log n)", "O(n²)", "O(log n)"],
+      "answer": 2,
+      "explanation": "Worst case is O(n²) — occurs on a reverse-sorted array where every comparison triggers a swap, requiring n-1 passes of n-1 comparisons each."
+    },
+    {
+      "id": "dsa_cp02",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the BEST-case time complexity of Bubble Sort (with the early-exit optimization on an already-sorted array)?",
+      "options": ["O(1)", "O(n)", "O(n log n)", "O(n²)"],
+      "answer": 1,
+      "explanation": "Best case is O(n) when the optimized version detects no swaps in the first pass and terminates. A single pass through n elements confirms the array is sorted."
+    },
+    {
+      "id": "dsa_cp03",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the space complexity of Bubble Sort?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+      "answer": 0,
+      "explanation": "Bubble sort is in-place: it only needs a constant amount of extra memory for the swap temporary, regardless of input size."
+    },
+    {
+      "id": "dsa_cp04",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the WORST-case time complexity of Insertion Sort?",
+      "options": ["O(n)", "O(n log n)", "O(n²)", "O(2ⁿ)"],
+      "answer": 2,
+      "explanation": "Worst case is O(n²) — reverse-sorted input forces every newly-inserted element to shift past all previously-sorted elements, giving 1+2+...+(n-1) = n(n-1)/2 operations."
+    },
+    {
+      "id": "dsa_cp05",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the BEST-case time complexity of Insertion Sort?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 2,
+      "explanation": "Best case is O(n) on an already-sorted array — each new element only needs one comparison to confirm it's in place. This makes insertion sort excellent for nearly-sorted data."
+    },
+    {
+      "id": "dsa_cp06",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the space complexity of Insertion Sort?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 0,
+      "explanation": "Insertion sort is in-place — it sorts within the original array using only constant extra storage for the element being inserted."
+    },
+    {
+      "id": "dsa_cp07",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the WORST-case time complexity of Merge Sort?",
+      "options": ["O(n)", "O(n log n)", "O(n²)", "O(log n)"],
+      "answer": 1,
+      "explanation": "Merge sort is O(n log n) in the worst case (and best, and average). The log n factor comes from halving the array; the n factor comes from merging at each level."
+    },
+    {
+      "id": "dsa_cp08",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the BEST-case time complexity of Merge Sort?",
+      "options": ["O(n)", "O(n log n)", "O(log n)", "O(n²)"],
+      "answer": 1,
+      "explanation": "Merge sort's best case is also O(n log n). It splits and merges regardless of input order — the work doesn't decrease for sorted input. That's the cost of its predictability."
+    },
+    {
+      "id": "dsa_cp09",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the space complexity of Merge Sort?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 2,
+      "explanation": "Merge sort needs O(n) auxiliary space for the temporary array used during merging. This is its main drawback compared to in-place sorts like heap sort or quick sort."
+    },
+    {
+      "id": "dsa_cp10",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the WORST-case time complexity of Quick Sort?",
+      "options": ["O(n)", "O(n log n)", "O(n²)", "O(n³)"],
+      "answer": 2,
+      "explanation": "Worst case is O(n²) — happens when the pivot consistently lands at the extreme (e.g., always picking the first element on an already-sorted array). One partition contains everything, the other is empty, so you get n levels of n work."
+    },
+    {
+      "id": "dsa_cp11",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the AVERAGE-case time complexity of Quick Sort?",
+      "options": ["O(n)", "O(n log n)", "O(n²)", "O(log n)"],
+      "answer": 1,
+      "explanation": "Average case is O(n log n) — assuming roughly balanced partitions, the recursion tree has log n levels with n work per level. Random pivot or median-of-three pivot selection makes the worst case extremely unlikely in practice."
+    },
+    {
+      "id": "dsa_cp12",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the AVERAGE-case space complexity of Quick Sort (recursion stack)?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 1,
+      "explanation": "Quick sort is in-place for the array but uses O(log n) stack space for recursion in the average case (balanced partitions). Worst case (unbalanced partitions): O(n) stack depth."
+    },
+    {
+      "id": "dsa_cp13",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the WORST-case time complexity of Heap Sort?",
+      "options": ["O(n)", "O(n log n)", "O(n²)", "O(log n)"],
+      "answer": 1,
+      "explanation": "Heap sort is O(n log n) in the worst case. Build heap takes O(n); then n extractions each cost O(log n) for sift-down. Total: O(n) + O(n log n) = O(n log n)."
+    },
+    {
+      "id": "dsa_cp14",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the BEST-case time complexity of Heap Sort?",
+      "options": ["O(n)", "O(n log n)", "O(n²)", "O(log n)"],
+      "answer": 1,
+      "explanation": "Best case is also O(n log n). Heap sort is input-insensitive — it must perform the same heap operations regardless of order."
+    },
+    {
+      "id": "dsa_cp15",
+      "category": "Complexity",
+      "section": "dsa-2",
+      "text": "What is the space complexity of Heap Sort (iterative implementation)?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 0,
+      "explanation": "Heap sort is in-place — the heap is built within the input array, and extractions move elements to the sorted tail of the same array. Only constant extra space is needed."
+    },
+    {
+      "id": "dsa_cp16",
+      "category": "Complexity",
+      "section": "dsa-3",
+      "text": "What is the WORST-case time complexity of Linear Search?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+      "answer": 2,
+      "explanation": "Linear search examines each element from start to finish. Worst case (element absent or last): n comparisons → O(n)."
+    },
+    {
+      "id": "dsa_cp17",
+      "category": "Complexity",
+      "section": "dsa-3",
+      "text": "What is the BEST-case time complexity of Linear Search?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 0,
+      "explanation": "Best case: the target is the first element — found in one comparison, O(1)."
+    },
+    {
+      "id": "dsa_cp18",
+      "category": "Complexity",
+      "section": "dsa-3",
+      "text": "What is the WORST-case time complexity of Binary Search?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 1,
+      "explanation": "Binary search halves the search space each step, so worst case is log₂(n) comparisons → O(log n). Remember: this requires the array to be sorted."
+    },
+    {
+      "id": "dsa_cp19",
+      "category": "Complexity",
+      "section": "dsa-3",
+      "text": "What is the BEST-case time complexity of Binary Search?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 0,
+      "explanation": "Best case: the target happens to be at the initial middle position — found in one comparison, O(1)."
+    },
+    {
+      "id": "dsa_cp20",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the time complexity of accessing an array element by index (e.g., arr[k])?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(k)"],
+      "answer": 0,
+      "explanation": "Array access by index is O(1) — the address is computed as base + (k × element_size). This direct-addressing capability is the primary advantage of arrays over linked lists."
+    },
+    {
+      "id": "dsa_cp21",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the worst-case time complexity of searching for a value in an UNSORTED array?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 2,
+      "explanation": "Without sorting, you must check each element — linear search, O(n)."
+    },
+    {
+      "id": "dsa_cp22",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the AMORTIZED time complexity of appending to the end of a dynamic array (vector)?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 0,
+      "explanation": "Amortized O(1). Most appends are O(1), but occasionally the array fills up and must be reallocated to double its size, costing O(n) for that copy. Spreading these expensive operations over many cheap ones gives constant amortized cost."
+    },
+    {
+      "id": "dsa_cp23",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the worst-case time complexity of inserting an element at the BEGINNING of an array of size n?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+      "answer": 2,
+      "explanation": "O(n) — every existing element must shift one position to the right to make room at index 0. This is why arrays are bad for front-insertion-heavy workloads."
+    },
+    {
+      "id": "dsa_cp24",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the worst-case time complexity of deleting an element from the middle of an array of size n?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+      "answer": 2,
+      "explanation": "O(n) — elements to the right of the deletion point must shift left to fill the gap. In the worst case (deleting near the front), nearly all elements move."
+    },
+    {
+      "id": "dsa_cp25",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the time complexity of Stack PUSH?",
+      "options": ["O(1)", "O(log n)", "O(n)", "Depends on stack size"],
+      "answer": 0,
+      "explanation": "Push is O(1) — just place the element at the top index and increment. (Amortized O(1) if the backing array needs occasional resizing.)"
+    },
+    {
+      "id": "dsa_cp26",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the time complexity of Stack POP?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 0,
+      "explanation": "Pop is O(1) — return the element at the top index and decrement. No traversal or shifting required."
+    },
+    {
+      "id": "dsa_cp27",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the time complexity of Queue ENQUEUE (with proper pointer/index management)?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(rear − front)"],
+      "answer": 0,
+      "explanation": "Enqueue is O(1) with a rear pointer (or rear index in a circular queue). Just place at rear and advance the pointer."
+    },
+    {
+      "id": "dsa_cp28",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the time complexity of Queue DEQUEUE?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 0,
+      "explanation": "Dequeue is O(1) with a front pointer/index — return the front element and advance the pointer. (A naive shift-everything implementation would be O(n), but that's not the standard approach.)"
+    },
+    {
+      "id": "dsa_cp29",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the time complexity of enqueue and dequeue in a Circular Queue?",
+      "options": ["O(1) both", "O(log n) both", "O(n) both", "O(1) enqueue, O(n) dequeue"],
+      "answer": 0,
+      "explanation": "Both are O(1). The circular layout (rear = (rear+1) % capacity, front = (front+1) % capacity) avoids the O(n) shifting that a naive linear queue might need, and reuses the buffer indefinitely."
+    },
+    {
+      "id": "dsa_cp30",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the time complexity of inserting at the HEAD of a singly linked list?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(k) where k is list size"],
+      "answer": 0,
+      "explanation": "O(1) — point the new node's next to the current head, then update head to the new node. No traversal."
+    },
+    {
+      "id": "dsa_cp31",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the time complexity of inserting at the END of a singly linked list with NO tail pointer?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(2)"],
+      "answer": 2,
+      "explanation": "O(n) — you must walk from head to the last node to attach the new one. With a tail pointer maintained separately, this drops to O(1)."
+    },
+    {
+      "id": "dsa_cp32",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the worst-case time complexity of searching for a value in a linked list?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 2,
+      "explanation": "O(n) — must traverse from the head following next pointers. Linked lists don't support binary search efficiently because they lack random access."
+    },
+    {
+      "id": "dsa_cp33",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the time complexity of deleting the HEAD node of a singly linked list?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 0,
+      "explanation": "O(1) — move the head pointer to head.next (and free the old head if managing memory). No traversal."
+    },
+    {
+      "id": "dsa_cp34",
+      "category": "Complexity",
+      "section": "dsa-4",
+      "text": "What is the worst-case time complexity of accessing the k-th element of a singly linked list?",
+      "options": ["O(1)", "O(log k)", "O(k)", "O(n²)"],
+      "answer": 2,
+      "explanation": "O(k) — you traverse from head, following k next pointers. In the worst case (k = n-1, the last element), this is O(n)."
+    },
+    {
+      "id": "dsa_cp35",
+      "category": "Complexity",
+      "section": "dsa-5",
+      "text": "What is the AVERAGE-case time complexity of search in a Binary Search Tree (BST)?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 1,
+      "explanation": "Average case is O(log n) — a randomly-built BST has expected height O(log n), so each comparison roughly halves the search space."
+    },
+    {
+      "id": "dsa_cp36",
+      "category": "Complexity",
+      "section": "dsa-5",
+      "text": "What is the WORST-case time complexity of search in a (non-balanced) Binary Search Tree?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+      "answer": 2,
+      "explanation": "Worst case is O(n) — happens when the tree degenerates into a linear chain (e.g., inserting sorted values into an unbalanced BST). The tree becomes essentially a linked list. This is precisely why self-balancing trees exist."
+    },
+    {
+      "id": "dsa_cp37",
+      "category": "Complexity",
+      "section": "dsa-5",
+      "text": "What is the WORST-case time complexity of insertion into a (non-balanced) BST?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+      "answer": 2,
+      "explanation": "O(n) in the worst case — insertion walks from root to a leaf position, which in a degenerate (skewed) tree is n nodes deep."
+    },
+    {
+      "id": "dsa_cp38",
+      "category": "Complexity",
+      "section": "dsa-5",
+      "text": "What is the WORST-case time complexity of deletion from a (non-balanced) BST?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+      "answer": 2,
+      "explanation": "O(n) worst case — the dominant cost is finding the node (and possibly its in-order successor) in a tree that could be skewed to height n."
+    },
+    {
+      "id": "dsa_cp39",
+      "category": "Complexity",
+      "section": "dsa-6",
+      "text": "What is the WORST-case time complexity of search in an AVL tree?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 1,
+      "explanation": "O(log n) worst case. AVL maintains height ≤ ~1.44 × log₂(n+2), so search depth is logarithmic — that's the whole point of the balance invariant."
+    },
+    {
+      "id": "dsa_cp40",
+      "category": "Complexity",
+      "section": "dsa-6",
+      "text": "What is the WORST-case time complexity of insertion into an AVL tree?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 1,
+      "explanation": "O(log n) worst case. Insertion is a normal BST insert (O(log n)), then at most one rotation (single or double) to restore balance, which is O(1). Total: O(log n)."
+    },
+    {
+      "id": "dsa_cp41",
+      "category": "Complexity",
+      "section": "dsa-6",
+      "text": "What is the time complexity of a single rotation (LL, RR, LR, or RL) in an AVL tree?",
+      "options": ["O(1)", "O(log n)", "O(n)", "Depends on subtree size"],
+      "answer": 0,
+      "explanation": "O(1) — a rotation only re-wires a constant number of pointers (typically 3), regardless of how many nodes are in the affected subtrees. The subtree contents come along untouched."
+    },
+    {
+      "id": "dsa_cp42",
+      "category": "Complexity",
+      "section": "dsa-6",
+      "text": "What is the WORST-case time complexity of search in a Red-Black tree?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 1,
+      "explanation": "O(log n). The black-height property guarantees that the longest path from root to leaf is at most twice the shortest (because reds can't be consecutive), so height is O(log n)."
+    },
+    {
+      "id": "dsa_cp43",
+      "category": "Complexity",
+      "section": "dsa-6",
+      "text": "What is the WORST-case time complexity of insertion into a Red-Black tree?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 1,
+      "explanation": "O(log n) — standard BST insert (O(log n)), then a fix-up loop with at most O(log n) recolorings and at most 2 rotations. Amortized rotations per insert is O(1)."
+    },
+    {
+      "id": "dsa_cp44",
+      "category": "Complexity",
+      "section": "dsa-7",
+      "text": "What is the time complexity of preorder traversal on a binary tree with n nodes?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 2,
+      "explanation": "O(n) — every node is visited exactly once, performing O(1) work per visit."
+    },
+    {
+      "id": "dsa_cp45",
+      "category": "Complexity",
+      "section": "dsa-7",
+      "text": "What is the time complexity of inorder traversal on a binary tree with n nodes?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+      "answer": 2,
+      "explanation": "O(n) — same reasoning: each node is visited once. All four traversals (preorder, inorder, postorder, level-order) are O(n) time."
+    },
+    {
+      "id": "dsa_cp46",
+      "category": "Complexity",
+      "section": "dsa-7",
+      "text": "What is the time complexity of postorder traversal on a binary tree with n nodes?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 2,
+      "explanation": "O(n) — every node visited once."
+    },
+    {
+      "id": "dsa_cp47",
+      "category": "Complexity",
+      "section": "dsa-7",
+      "text": "What is the time complexity of level-order (BFS) traversal on a binary tree with n nodes?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+      "answer": 2,
+      "explanation": "O(n) — each node enters the queue once and is processed once. Space complexity is O(w) where w is the max width of the tree (at most n/2 for a balanced tree)."
+    },
+    {
+      "id": "dsa_cp48",
+      "category": "Complexity",
+      "section": "dsa-8",
+      "text": "What is the time complexity of inserting an element into a binary heap of size n?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 1,
+      "explanation": "O(log n) — insert at the end of the array, then sift up: compare with parent and swap, at most log n times (the height of the heap)."
+    },
+    {
+      "id": "dsa_cp49",
+      "category": "Complexity",
+      "section": "dsa-8",
+      "text": "What is the time complexity of extracting the min from a min-heap (or max from a max-heap)?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 1,
+      "explanation": "O(log n) — replace the root with the last element, then sift down: compare with the smaller child and swap, at most log n times."
+    },
+    {
+      "id": "dsa_cp50",
+      "category": "Complexity",
+      "section": "dsa-8",
+      "text": "What is the time complexity of PEEKING at the min/max in a heap (without removing it)?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 0,
+      "explanation": "O(1) — the min (or max) is always at the root, which is index 0 of the heap array. Just read it."
+    },
+    {
+      "id": "dsa_cp51",
+      "category": "Complexity",
+      "section": "dsa-8",
+      "text": "What is the time complexity of a single sift-down (heapify) operation on a heap of size n?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 1,
+      "explanation": "O(log n) — sift-down may travel from the current node down to a leaf, which is at most log n levels in a complete binary tree."
+    },
+    {
+      "id": "dsa_cp52",
+      "category": "Complexity",
+      "section": "dsa-8",
+      "text": "What is the time complexity of BUILDING a heap from an unsorted array of n elements (heapify-all)?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 2,
+      "explanation": "O(n) — surprising but true. Although a single sift-down is O(log n), most nodes are near the bottom and sift down very little. The summation Σ(n / 2^(h+1)) × h converges to a constant times n. Don't pick O(n log n) — that's a common trap on exams."
+    },
+    {
+      "id": "dsa_cp53",
+      "category": "Complexity",
+      "section": "dsa-8",
+      "text": "What is the worst-case time complexity of searching for an arbitrary value in a binary heap of size n?",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+      "answer": 2,
+      "explanation": "O(n). A heap is ordered with respect to root-vs-child only, not left-vs-right. To find an arbitrary value you may have to scan every element. Heaps are priority queues, not search structures."
+    },
+    {
+      "id": "dsa_cp54",
+      "category": "Complexity",
+      "section": "dsa-9",
+      "text": "What is the space complexity of an Adjacency Matrix for a graph with V vertices?",
+      "options": ["O(V)", "O(V + E)", "O(V²)", "O(E)"],
+      "answer": 2,
+      "explanation": "O(V²) — the matrix has a row and column for each vertex, giving V² cells regardless of edge count. Wasteful for sparse graphs but constant-time edge lookup."
+    },
+    {
+      "id": "dsa_cp55",
+      "category": "Complexity",
+      "section": "dsa-9",
+      "text": "What is the space complexity of an Adjacency List for a graph with V vertices and E edges?",
+      "options": ["O(V)", "O(V + E)", "O(V²)", "O(V·E)"],
+      "answer": 1,
+      "explanation": "O(V + E) — one list head per vertex (V), plus one entry per edge across all lists (E for directed, 2E for undirected, still O(E))."
+    },
+    {
+      "id": "dsa_cp56",
+      "category": "Complexity",
+      "section": "dsa-9",
+      "text": "What is the time complexity of checking whether an edge (u, v) exists in an Adjacency Matrix?",
+      "options": ["O(1)", "O(log V)", "O(V)", "O(V + E)"],
+      "answer": 0,
+      "explanation": "O(1) — just read matrix[u][v]. This is the main advantage of adjacency matrices: constant-time edge lookup."
+    },
+    {
+      "id": "dsa_cp57",
+      "category": "Complexity",
+      "section": "dsa-9",
+      "text": "What is the worst-case time complexity of checking whether an edge (u, v) exists in an Adjacency List?",
+      "options": ["O(1)", "O(log V)", "O(V)", "O(V²)"],
+      "answer": 2,
+      "explanation": "O(V) in the worst case — scan u's adjacency list, which can have up to V-1 entries. (Alternative expression: O(degree of u), which is V-1 worst case.)"
+    },
+    {
+      "id": "dsa_cp58",
+      "category": "Complexity",
+      "section": "dsa-10",
+      "text": "What is the time complexity of BFS on a graph represented as an Adjacency List?",
+      "options": ["O(V)", "O(V + E)", "O(V²)", "O(V·E)"],
+      "answer": 1,
+      "explanation": "O(V + E) — each vertex is enqueued/dequeued once (O(V)), and each edge is examined once (O(E)). This is the standard complexity quoted for graph traversal."
+    },
+    {
+      "id": "dsa_cp59",
+      "category": "Complexity",
+      "section": "dsa-10",
+      "text": "What is the time complexity of BFS on a graph represented as an Adjacency Matrix?",
+      "options": ["O(V)", "O(V + E)", "O(V²)", "O(E log V)"],
+      "answer": 2,
+      "explanation": "O(V²) — for each of V vertices, finding its neighbors requires scanning a row of V entries in the matrix."
+    },
+    {
+      "id": "dsa_cp60",
+      "category": "Complexity",
+      "section": "dsa-10",
+      "text": "What is the time complexity of DFS on a graph represented as an Adjacency List?",
+      "options": ["O(V)", "O(V + E)", "O(V²)", "O(V log V)"],
+      "answer": 1,
+      "explanation": "O(V + E) — same as BFS. Each vertex is visited once and each edge is examined once. The difference between BFS and DFS is order of exploration, not asymptotic cost."
+    },
+    {
+      "id": "dsa_cp61",
+      "category": "Complexity",
+      "section": "dsa-10",
+      "text": "What is the time complexity of DFS on a graph represented as an Adjacency Matrix?",
+      "options": ["O(V)", "O(V + E)", "O(V²)", "O(V·E)"],
+      "answer": 2,
+      "explanation": "O(V²) — same reasoning as BFS on a matrix. Finding the neighbors of each vertex requires scanning a full row."
+    },
+    {
+      "id": "dsa_cp62",
+      "category": "Complexity",
+      "section": "dsa-11",
+      "text": "What is the time complexity of Dijkstra's algorithm using a binary heap (priority queue) and an adjacency list?",
+      "options": ["O(V + E)", "O((V + E) log V)", "O(V²)", "O(V·E)"],
+      "answer": 1,
+      "explanation": "O((V + E) log V). Each of V extract-min operations costs O(log V), and each of E edge relaxations may trigger a decrease-key, also O(log V). Total: O((V + E) log V), often written O(E log V) since E ≥ V-1 for connected graphs."
+    },
+    {
+      "id": "dsa_cp63",
+      "category": "Complexity",
+      "section": "dsa-11",
+      "text": "What is the time complexity of Dijkstra's algorithm using a simple array (no priority queue)?",
+      "options": ["O(V + E)", "O(V log V)", "O(V²)", "O(V·E)"],
+      "answer": 2,
+      "explanation": "O(V²) — V iterations of the main loop, each scanning a V-entry array to find the minimum. Better than the heap version for dense graphs where E ≈ V²."
+    },
+    {
+      "id": "dsa_cp64",
+      "category": "Complexity",
+      "section": "dsa-11",
+      "text": "What is the time complexity of the Bellman-Ford algorithm?",
+      "options": ["O(V + E)", "O(E log V)", "O(V²)", "O(V·E)"],
+      "answer": 3,
+      "explanation": "O(V·E). It performs V-1 relaxation passes, each examining all E edges. Slower than Dijkstra, but it works with negative edge weights and can detect negative cycles."
+    },
+
+    {
+      "id": "dsa_st01",
+      "category": "Self-Test",
+      "section": "dsa-1",
+      "text": "Big O notation is most commonly used to describe which case of an algorithm's running time?",
+      "options": ["Best case", "Average case", "Worst case", "Amortized case"],
+      "answer": 2,
+      "explanation": "Big O is the asymptotic upper bound, so it's most often used to characterize worst-case running time. (Formally Big O is just a bound — it can describe any case — but exam questions usually mean worst case.)"
+    },
+    {
+      "id": "dsa_st02",
+      "category": "Self-Test",
+      "section": "dsa-1",
+      "text": "Which of the following has the SLOWEST growth rate (most efficient for large n)?",
+      "options": ["O(n²)", "O(n log n)", "O(log n)", "O(n)"],
+      "answer": 2,
+      "explanation": "Ordering slowest growth to fastest: O(1) < O(log n) < O(n) < O(n log n) < O(n²). Logarithmic is the slowest-growing of the choices given."
+    },
+    {
+      "id": "dsa_st03",
+      "category": "Self-Test",
+      "section": "dsa-1",
+      "text": "If an algorithm is Θ(n log n), it means:",
+      "options": ["It runs in n log n time on every input", "Its growth is bounded both above and below by n log n", "It runs in O(n) for best case and O(log n) for worst", "It's a logarithmic-time algorithm"],
+      "answer": 1,
+      "explanation": "Theta gives a tight bound — the function grows asymptotically like n log n (within constant factors), not faster and not slower."
+    },
+    {
+      "id": "dsa_st04",
+      "category": "Self-Test",
+      "section": "dsa-2",
+      "text": "Which sorting algorithm is GUARANTEED to be O(n log n) in the worst case AND uses O(n) auxiliary space?",
+      "options": ["Quick Sort", "Heap Sort", "Merge Sort", "Bubble Sort"],
+      "answer": 2,
+      "explanation": "Merge sort: always O(n log n), but needs O(n) extra space for merging. Heap sort is also O(n log n) but uses O(1) space. Quick sort has worst case O(n²). Bubble sort is O(n²)."
+    },
+    {
+      "id": "dsa_st05",
+      "category": "Self-Test",
+      "section": "dsa-2",
+      "text": "Which sorting algorithm is BOTH O(n log n) worst case AND in-place (O(1) extra space)?",
+      "options": ["Merge Sort", "Quick Sort", "Heap Sort", "Insertion Sort"],
+      "answer": 2,
+      "explanation": "Heap sort uniquely combines guaranteed O(n log n) with in-place operation. Merge sort needs O(n) auxiliary memory; quick sort is O(n²) worst case (and O(log n) stack); insertion sort is O(n²)."
+    },
+    {
+      "id": "dsa_st06",
+      "category": "Self-Test",
+      "section": "dsa-2",
+      "text": "Which sorting algorithm performs BEST on an array that is already nearly sorted?",
+      "options": ["Quick Sort with first-element pivot", "Insertion Sort", "Merge Sort", "Heap Sort"],
+      "answer": 1,
+      "explanation": "Insertion sort runs in O(n) on a nearly-sorted (or fully sorted) array — each element shifts very little. Quick sort with first-element pivot is actually worst-case O(n²) on sorted input. Merge/heap sort are O(n log n) regardless."
+    },
+    {
+      "id": "dsa_st07",
+      "category": "Self-Test",
+      "section": "dsa-2",
+      "text": "Quick sort's worst-case O(n²) behavior occurs when:",
+      "options": ["The array is large", "The pivot consistently splits the array into very unequal parts", "Recursion depth is shallow", "The array has duplicate elements"],
+      "answer": 1,
+      "explanation": "Worst case arises when the pivot is always near the extreme — e.g., choosing the first element as pivot on an already-sorted array gives partitions of size 0 and n-1. Random pivot selection makes this scenario very unlikely."
+    },
+    {
+      "id": "dsa_st08",
+      "category": "Self-Test",
+      "section": "dsa-3",
+      "text": "What is the prerequisite for binary search to work correctly?",
+      "options": ["The array must contain only integers", "The array must have unique elements", "The array must be sorted", "The array must be of length 2ⁿ"],
+      "answer": 2,
+      "explanation": "Binary search relies on the sorted order to decide which half to discard at each step. On an unsorted array, the result is undefined — it's not just slow, it's wrong."
+    },
+    {
+      "id": "dsa_st09",
+      "category": "Self-Test",
+      "section": "dsa-4",
+      "text": "A stack follows which access order?",
+      "options": ["FIFO (first-in, first-out)", "LIFO (last-in, first-out)", "Priority order", "Random access"],
+      "answer": 1,
+      "explanation": "Stack = LIFO. Think of a stack of plates: the last one placed is the first one removed. Push adds to the top, pop removes from the top."
+    },
+    {
+      "id": "dsa_st10",
+      "category": "Self-Test",
+      "section": "dsa-4",
+      "text": "A queue follows which access order?",
+      "options": ["FIFO (first-in, first-out)", "LIFO (last-in, first-out)", "Priority order", "Sorted order"],
+      "answer": 0,
+      "explanation": "Queue = FIFO. Like a line at a store: first to arrive is first to be served. Enqueue adds to the rear, dequeue removes from the front."
+    },
+    {
+      "id": "dsa_st11",
+      "category": "Self-Test",
+      "section": "dsa-4",
+      "text": "What is the main purpose of a Circular Queue (vs. a linear queue)?",
+      "options": ["To allow priority-based extraction", "To reuse buffer space efficiently when items are dequeued from the front", "To make searching O(log n)", "To enable random access by index"],
+      "answer": 1,
+      "explanation": "In a linear queue using a fixed array, the front pointer advances and leaves unused space at the start that you'd have to shift to reclaim. A circular queue wraps the rear pointer around — when it reaches the end, it returns to index 0 — so the buffer is reused without shifting. Common in fixed-size buffers like CPU scheduling and producer-consumer pipelines."
+    },
+    {
+      "id": "dsa_st12",
+      "category": "Self-Test",
+      "section": "dsa-4",
+      "text": "Why can't you efficiently run binary search on a linked list?",
+      "options": ["Linked lists can't store sorted data", "Linked lists don't support O(1) access to the middle element", "Linked lists are always small", "Binary search requires arrays of size 2ⁿ"],
+      "answer": 1,
+      "explanation": "Binary search needs O(1) access to the middle element to halve the search space cheaply. In a linked list, finding the middle takes O(n) traversal — so any 'binary search' on a linked list ends up O(n log n) or worse, defeating the purpose."
+    },
+    {
+      "id": "dsa_st13",
+      "category": "Self-Test",
+      "section": "dsa-5",
+      "text": "In a tree, the ROOT is:",
+      "options": ["Any node with two children", "The deepest node", "The topmost node with no parent", "A node with no children"],
+      "answer": 2,
+      "explanation": "The root is the single topmost node — the unique node without a parent. Every other node in the tree is a descendant of the root."
+    },
+    {
+      "id": "dsa_st14",
+      "category": "Self-Test",
+      "section": "dsa-5",
+      "text": "In a tree, a LEAF node is:",
+      "options": ["The root", "Any internal node", "A node with no children", "A node at depth 1"],
+      "answer": 2,
+      "explanation": "A leaf has no children — it terminates a branch. Synonyms: external node, terminal node."
+    },
+    {
+      "id": "dsa_st15",
+      "category": "Self-Test",
+      "section": "dsa-5",
+      "text": "What is the difference between the HEIGHT and DEPTH of a node?",
+      "options": ["They are synonyms", "Depth is measured from the root down; height is the longest path from the node down to a leaf", "Height is from the root; depth is to the leaves", "Depth includes the node itself; height does not"],
+      "answer": 1,
+      "explanation": "Depth of a node = distance from the root to that node. Height of a node = length of the longest path from that node down to any leaf. The height of the tree equals the height of the root (= the maximum depth of any leaf)."
+    },
+    {
+      "id": "dsa_st16",
+      "category": "Self-Test",
+      "section": "dsa-5",
+      "text": "A FULL binary tree is one in which:",
+      "options": ["Every level is filled and all leaves are at the same depth", "Every node has either 0 or 2 children (never exactly 1)", "Every node has exactly 2 children", "The last level is filled left to right"],
+      "answer": 1,
+      "explanation": "Full = every node has 0 OR 2 children. A node with exactly one child disqualifies the tree from being full. Don't confuse this with 'perfect' (all leaves same depth) or 'complete' (last level filled left-to-right)."
+    },
+    {
+      "id": "dsa_st17",
+      "category": "Self-Test",
+      "section": "dsa-5",
+      "text": "A COMPLETE binary tree is one in which:",
+      "options": ["Every node has 0 or 2 children", "All levels are fully filled except possibly the last, which is filled from left to right", "All internal nodes have 2 children and all leaves are at the same depth", "Every level has the same number of nodes"],
+      "answer": 1,
+      "explanation": "Complete: every level fully filled, except possibly the last which fills left-to-right. This property is why heaps can be stored in a flat array — no gaps. Note: a complete tree can have a node with exactly one child (only allowed in the last filled level)."
+    },
+    {
+      "id": "dsa_st18",
+      "category": "Self-Test",
+      "section": "dsa-5",
+      "text": "A PERFECT binary tree is one in which:",
+      "options": ["Every node has 0 or 2 children", "Last level fills left-to-right", "All internal nodes have 2 children AND all leaves are at the same depth", "The number of leaves equals the number of internal nodes"],
+      "answer": 2,
+      "explanation": "Perfect = all internal nodes have 2 children AND all leaves are at the same depth. This is the most restrictive of the three. A perfect tree of height h has exactly 2^(h+1) - 1 nodes. Perfect ⊂ Complete ⊂ (general binary tree)."
+    },
+    {
+      "id": "dsa_st19",
+      "category": "Self-Test",
+      "section": "dsa-6",
+      "text": "In an AVL tree, the balance factor of every node must be in which range?",
+      "options": ["{0}", "{−1, 0, +1}", "{−2, −1, 0, +1, +2}", "Any integer"],
+      "answer": 1,
+      "explanation": "Balance factor = height(left subtree) − height(right subtree). AVL requires this to be in {−1, 0, +1} for every node. If it goes to ±2, a rotation is triggered to restore balance."
+    },
+    {
+      "id": "dsa_st20",
+      "category": "Self-Test",
+      "section": "dsa-6",
+      "text": "Which AVL rotation case is fixed by a SINGLE RIGHT rotation?",
+      "options": ["LL (left-left)", "RR (right-right)", "LR (left-right)", "RL (right-left)"],
+      "answer": 0,
+      "explanation": "LL imbalance — too heavy on the left subtree's left side — is fixed by a single right rotation at the imbalanced node. (Mnemonic: rotate AGAINST the direction of imbalance.)"
+    },
+    {
+      "id": "dsa_st21",
+      "category": "Self-Test",
+      "section": "dsa-6",
+      "text": "Which AVL rotation case is fixed by a SINGLE LEFT rotation?",
+      "options": ["LL", "RR", "LR", "RL"],
+      "answer": 1,
+      "explanation": "RR imbalance — too heavy on the right subtree's right side — is fixed by a single left rotation at the imbalanced node."
+    },
+    {
+      "id": "dsa_st22",
+      "category": "Self-Test",
+      "section": "dsa-6",
+      "text": "How many rotations does an LR (left-right) imbalance require to fix?",
+      "options": ["One left rotation", "One right rotation", "Two: a left rotation on the left child, then a right rotation on the imbalanced node", "Three rotations"],
+      "answer": 2,
+      "explanation": "LR is a 'double rotation' case: first left-rotate the left child to convert the LR shape into an LL shape, then right-rotate the imbalanced node to fix it. Two rotations, both O(1)."
+    },
+    {
+      "id": "dsa_st23",
+      "category": "Self-Test",
+      "section": "dsa-6",
+      "text": "How many rotations does an RL (right-left) imbalance require to fix?",
+      "options": ["One left rotation", "One right rotation", "Two: a right rotation on the right child, then a left rotation on the imbalanced node", "Three rotations"],
+      "answer": 2,
+      "explanation": "RL is the mirror of LR: first right-rotate the right child to convert RL into RR, then left-rotate the imbalanced node. Two rotations total."
+    },
+    {
+      "id": "dsa_st24",
+      "category": "Self-Test",
+      "section": "dsa-6",
+      "text": "In a red-black tree, what color must the ROOT be?",
+      "options": ["Red", "Black", "Either color", "It depends on the tree size"],
+      "answer": 1,
+      "explanation": "Property 2 of red-black trees: the root is always black. If an insertion makes the root red as part of fix-up, the algorithm explicitly recolors it black at the end."
+    },
+    {
+      "id": "dsa_st25",
+      "category": "Self-Test",
+      "section": "dsa-6",
+      "text": "Which is one of the five properties of a Red-Black tree?",
+      "options": ["The root may be red or black", "Two red nodes may be adjacent", "Every path from a node to a descendant NIL has the same number of black nodes", "Every leaf is red"],
+      "answer": 2,
+      "explanation": "That's property 5 — the black-height invariant. All five properties: (1) every node is red or black, (2) root is black, (3) every NIL (leaf sentinel) is black, (4) red nodes have black children (no red-red), (5) equal black count on all root-to-NIL paths."
+    },
+    {
+      "id": "dsa_st26",
+      "category": "Self-Test",
+      "section": "dsa-7",
+      "text": "Inorder traversal of a Binary Search Tree visits nodes in what order?",
+      "options": ["Insertion order", "Ascending sorted order", "Descending sorted order", "Random order"],
+      "answer": 1,
+      "explanation": "Inorder visits Left → Root → Right. Combined with the BST property (left < root < right), this produces nodes in ascending sorted order. A handy way to verify a tree is actually a valid BST."
+    },
+    {
+      "id": "dsa_st27",
+      "category": "Self-Test",
+      "section": "dsa-7",
+      "text": "In which traversal is the ROOT visited FIRST?",
+      "options": ["Preorder", "Inorder", "Postorder", "Level-order (BFS)"],
+      "answer": 0,
+      "explanation": "Preorder: Root → Left → Right. The 'pre' refers to root being visited before its subtrees. Level-order also visits root first, but the standard answer here is Preorder; if your exam offers both, the question usually means the depth-first traversal that visits root first."
+    },
+    {
+      "id": "dsa_st28",
+      "category": "Self-Test",
+      "section": "dsa-7",
+      "text": "In which traversal is the ROOT visited LAST?",
+      "options": ["Preorder", "Inorder", "Postorder", "Level-order"],
+      "answer": 2,
+      "explanation": "Postorder: Left → Right → Root. The 'post' means root is visited after its subtrees. This order is useful for deleting a tree (children deleted before parent) and for expression-tree evaluation."
+    },
+    {
+      "id": "dsa_st29",
+      "category": "Self-Test",
+      "section": "dsa-10",
+      "text": "Which data structure does BFS (Breadth-First Search) primarily use?",
+      "options": ["Stack", "Queue", "Priority queue", "Hash table"],
+      "answer": 1,
+      "explanation": "BFS uses a queue (FIFO). You enqueue the starting vertex, then repeatedly dequeue a vertex and enqueue its unvisited neighbors. The FIFO order is what makes BFS explore by levels."
+    },
+    {
+      "id": "dsa_st30",
+      "category": "Self-Test",
+      "section": "dsa-10",
+      "text": "Which data structure does DFS (Depth-First Search) primarily use?",
+      "options": ["Queue", "Stack (explicit or via recursion)", "Priority queue", "Heap"],
+      "answer": 1,
+      "explanation": "DFS uses a stack — either explicitly (push neighbors, pop the next to explore) or implicitly via recursion (which uses the call stack). The LIFO order is what makes DFS dive deep before backtracking."
+    },
+    {
+      "id": "dsa_st31",
+      "category": "Self-Test",
+      "section": "dsa-8",
+      "text": "In a MIN heap, what is the relationship between a parent and its children?",
+      "options": ["Parent ≥ both children", "Parent ≤ both children", "Parent = average of children", "Parent < left child but > right child"],
+      "answer": 1,
+      "explanation": "Min-heap property: every parent is less than or equal to its children. This means the minimum element is always at the root."
+    },
+    {
+      "id": "dsa_st32",
+      "category": "Self-Test",
+      "section": "dsa-8",
+      "text": "In a MAX heap, what is the relationship between a parent and its children?",
+      "options": ["Parent ≥ both children", "Parent ≤ both children", "Parent equals one of the children", "There is no ordering constraint"],
+      "answer": 0,
+      "explanation": "Max-heap property: every parent is greater than or equal to its children. The maximum element sits at the root."
+    },
+    {
+      "id": "dsa_st33",
+      "category": "Self-Test",
+      "section": "dsa-8",
+      "text": "In a 0-indexed array-based heap, the PARENT of the node at index i is at index:",
+      "options": ["i / 2", "(i − 1) / 2", "2i", "2i + 1"],
+      "answer": 1,
+      "explanation": "For 0-indexed arrays: parent(i) = (i − 1) / 2 using integer division. (For 1-indexed it's just i / 2 — common in textbook pseudocode. Watch the indexing convention on your exam.)"
+    },
+    {
+      "id": "dsa_st34",
+      "category": "Self-Test",
+      "section": "dsa-8",
+      "text": "In a 0-indexed array-based heap, the LEFT child of the node at index i is at index:",
+      "options": ["2i", "2i + 1", "2i + 2", "(i − 1) / 2"],
+      "answer": 1,
+      "explanation": "For 0-indexed: left(i) = 2i + 1. (For 1-indexed: 2i.)"
+    },
+    {
+      "id": "dsa_st35",
+      "category": "Self-Test",
+      "section": "dsa-8",
+      "text": "In a 0-indexed array-based heap, the RIGHT child of the node at index i is at index:",
+      "options": ["2i", "2i + 1", "2i + 2", "i / 2"],
+      "answer": 2,
+      "explanation": "For 0-indexed: right(i) = 2i + 2. (For 1-indexed: 2i + 1.)"
+    },
+    {
+      "id": "dsa_st36",
+      "category": "Self-Test",
+      "section": "dsa-9",
+      "text": "What is the main advantage of an Adjacency Matrix over an Adjacency List?",
+      "options": ["Less memory usage", "O(1) edge existence check", "Easier to iterate over neighbors", "Better for sparse graphs"],
+      "answer": 1,
+      "explanation": "Adjacency matrix gives O(1) lookup for 'is there an edge (u, v)?' — just read matrix[u][v]. Adjacency list requires scanning u's neighbor list. The trade-off is matrix's O(V²) space."
+    },
+    {
+      "id": "dsa_st37",
+      "category": "Self-Test",
+      "section": "dsa-9",
+      "text": "What is the main advantage of an Adjacency List over an Adjacency Matrix?",
+      "options": ["O(1) edge existence check", "Space efficient for sparse graphs (O(V + E) instead of O(V²))", "Easier to implement", "Better for unweighted graphs only"],
+      "answer": 1,
+      "explanation": "Adjacency list is O(V + E) space. For sparse graphs (E << V²), this is a huge memory win. Also faster to iterate over a single vertex's neighbors (O(degree) vs. O(V) for a matrix row)."
+    },
+    {
+      "id": "dsa_st38",
+      "category": "Self-Test",
+      "section": "dsa-11",
+      "text": "Which shortest-path algorithm correctly handles graphs with NEGATIVE edge weights?",
+      "options": ["Dijkstra's algorithm", "BFS", "Bellman-Ford", "DFS"],
+      "answer": 2,
+      "explanation": "Bellman-Ford relaxes all edges V-1 times and is correct for negative edges (as long as there's no negative-weight cycle reachable from the source). Dijkstra's greedy approach fails on negatives."
+    },
+    {
+      "id": "dsa_st39",
+      "category": "Self-Test",
+      "section": "dsa-11",
+      "text": "Dijkstra's algorithm is an example of which algorithmic paradigm?",
+      "options": ["Dynamic programming", "Greedy", "Divide and conquer", "Backtracking"],
+      "answer": 1,
+      "explanation": "Dijkstra is greedy: at each step it commits to the unvisited vertex with the smallest tentative distance, never revising that choice. This greedy correctness only holds for non-negative edge weights."
+    },
+    {
+      "id": "dsa_st40",
+      "category": "Self-Test",
+      "section": "dsa-11",
+      "text": "Bellman-Ford uses which algorithmic approach?",
+      "options": ["Greedy", "Dynamic programming (repeated edge relaxation)", "Divide and conquer", "Backtracking"],
+      "answer": 1,
+      "explanation": "Bellman-Ford repeatedly relaxes all edges, building shortest-path estimates from sub-problems — that's the DP signature. V-1 rounds suffice because the longest shortest path has at most V-1 edges."
+    },
+    {
+      "id": "dsa_st41",
+      "category": "Self-Test",
+      "section": "dsa-10",
+      "text": "BFS finds the shortest path between two vertices in what kind of graph?",
+      "options": ["Any weighted graph", "An unweighted graph (or one where all edges have equal weight)", "Only acyclic graphs", "Only undirected graphs"],
+      "answer": 1,
+      "explanation": "BFS explores by levels, so the first time it reaches a vertex it has traversed the fewest edges — which is the shortest path when all edges have equal cost. For weighted graphs, you need Dijkstra or Bellman-Ford."
+    }
+  ]
+}

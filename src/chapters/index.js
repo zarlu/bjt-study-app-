@@ -9,6 +9,7 @@ import chapter2 from './chapter2.json';
 import chapter3 from './chapter3.json';
 import chapter4 from './chapter4.json';
 import chapter8 from './chapter8.json';
+import dsa from './dsa.json';
 
 export const CHAPTERS = [chaptermidterm, chapter1, chapter2, chapter3, chapter4, chapter8];
 
