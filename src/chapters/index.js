@@ -11,7 +11,7 @@ import chapter4 from './chapter4.json';
 import chapter8 from './chapter8.json';
 import dsa from './dsa.json';
 
-export const CHAPTERS = [chaptermidterm, chapter1, chapter2, chapter3, chapter4, chapter8];
+export const CHAPTERS = [chaptermidterm, chapter1, chapter2, chapter3, chapter4, chapter8, dsa];
 
 // Convenience helpers used by App.jsx
 export const ALL_QUESTIONS = CHAPTERS.flatMap(ch =>
