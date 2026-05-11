@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { CHAPTERS, getChapter, getQuestionsByScope } from "./chapters";
+import { useState, useEffect } from "react";
+import { TRACKS, CHAPTERS, getChapter, getTrack, getQuestionsByScope } from "./chapters";
 
 // ─── STYLES ──────────────────────────────────────────────────────────────────
 
@@ -13,6 +13,7 @@ const theme = {
   textMuted: "#8b90a0",
   textDim: "#5c6175",
   accent: "#6c9fff",
+  accentBg: "rgba(108,159,255,0.1)",
   accentDim: "#3d6abf",
   correct: "#3dd68c",
   correctBg: "rgba(61,214,140,0.08)",
@@ -24,11 +25,30 @@ const theme = {
   warningBg: "rgba(240,185,85,0.08)",
   purple: "#a78bfa",
   purpleBg: "rgba(167,139,250,0.08)",
+  cyan: "#3dd4d6",
+  cyanBg: "rgba(61,212,214,0.08)",
 };
+
+// ─── CATEGORY META ───────────────────────────────────────────────────────────
+// Central registry for question categories. Adding a new category in a chapter
+// JSON requires no code changes — falls back to CATEGORY_DEFAULT. Add an entry
+// here only if you want a custom icon, description, or color.
+
+const CATEGORY_META = {
+  "True/False":     { icon: "✓✗", desc: "True or False statements",           color: theme.accent,  bg: theme.accentBg  },
+  "Circuit Action": { icon: "⚡",  desc: "Predict circuit behavior changes",  color: theme.warning, bg: theme.warningBg },
+  "Self-Test":      { icon: "📝", desc: "Multiple choice — mixed concepts",   color: theme.purple,  bg: theme.purpleBg  },
+  "Complexity":     { icon: "📊", desc: "Big O time-complexity drills",        color: theme.cyan,    bg: theme.cyanBg    },
+};
+const CATEGORY_DEFAULT = { icon: "❓", desc: "Mixed questions", color: theme.textMuted, bg: theme.surface };
+
+function getCategoryMeta(cat) {
+  return CATEGORY_META[cat] || CATEGORY_DEFAULT;
+}
 
 // ─── PRIMITIVES ──────────────────────────────────────────────────────────────
 
-function Badge({ children, color = theme.accent, bg = "rgba(108,159,255,0.1)" }) {
+function Badge({ children, color = theme.accent, bg = theme.accentBg }) {
   return (
     <span style={{
       display: "inline-block",
@@ -50,17 +70,38 @@ function SectionBadge({ section }) {
 }
 
 function CategoryBadge({ category }) {
-  const colors = {
-    "True/False": { c: theme.accent, b: "rgba(108,159,255,0.1)" },
-    "Circuit Action": { c: theme.warning, b: theme.warningBg },
-    "Self-Test": { c: theme.purple, b: theme.purpleBg },
-  };
-  const { c, b } = colors[category] || colors["Self-Test"];
-  return <Badge color={c} bg={b}>{category}</Badge>;
+  const { color, bg } = getCategoryMeta(category);
+  return <Badge color={color} bg={bg}>{category}</Badge>;
 }
 
-function ChapterBadge({ chapterNumber }) {
-  return <Badge color={theme.correct} bg={theme.correctBg}>Ch.{chapterNumber}</Badge>;
+function ChapterBadge({ chapterId }) {
+  const ch = getChapter(chapterId);
+  if (!ch) return null;
+  return <Badge color={theme.correct} bg={theme.correctBg}>{ch.icon} {ch.shortTitle}</Badge>;
+}
+
+function FilterPill({ active, disabled, onClick, label }) {
+  return (
+    <button
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
+      style={{
+        padding: "7px 14px",
+        borderRadius: "8px",
+        border: `1px solid ${active ? theme.accent : theme.border}`,
+        background: active ? theme.accentBg : theme.surface,
+        color: active ? theme.accent : disabled ? theme.textDim : theme.textMuted,
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.4 : 1,
+        fontSize: "12.5px",
+        fontWeight: 600,
+        fontFamily: "inherit",
+        transition: "all 0.15s",
+      }}
+    >
+      {label}
+    </button>
+  );
 }
 
 // ─── CHAPTER OVERVIEW ────────────────────────────────────────────────────────
@@ -173,7 +214,7 @@ function QuestionCard({ q, index, showChapter }) {
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ marginBottom: "8px" }}>{q.text}</div>
           <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-            {showChapter && <ChapterBadge chapterNumber={q.chapterNumber} />}
+            {showChapter && <ChapterBadge chapterId={q.chapterId} />}
             <CategoryBadge category={q.category} />
             <SectionBadge section={q.section} />
           </div>
@@ -214,9 +255,10 @@ function Visualizer({ chapter }) {
   const [filter, setFilter] = useState("all");
 
   const questions = chapter.questions;
+  // Categories derived from the chapter's actual data — no hardcoding.
+  const categoriesInData = [...new Set(questions.map(q => q.category))];
+  const categories = ["all", ...categoriesInData];
   const filtered = filter === "all" ? questions : questions.filter(q => q.category === filter);
-
-  const categories = ["all", "True/False", "Circuit Action", "Self-Test"];
 
   return (
     <div>
@@ -225,20 +267,13 @@ function Visualizer({ chapter }) {
       <div style={{ display: "flex", gap: "8px", marginBottom: "20px", flexWrap: "wrap" }}>
         {categories.map(cat => {
           const count = cat === "all" ? questions.length : questions.filter(q => q.category === cat).length;
-          if (count === 0 && cat !== "all") return null;
           return (
-            <button key={cat} onClick={() => setFilter(cat)} style={{
-              padding: "7px 16px",
-              borderRadius: "8px",
-              border: `1px solid ${filter === cat ? theme.accent : theme.border}`,
-              background: filter === cat ? "rgba(108,159,255,0.12)" : theme.surface,
-              color: filter === cat ? theme.accent : theme.textMuted,
-              cursor: "pointer",
-              fontSize: "13px",
-              fontWeight: 600,
-              fontFamily: "inherit",
-              transition: "all 0.15s",
-            }}>{cat === "all" ? `All (${count})` : `${cat} (${count})`}</button>
+            <FilterPill
+              key={cat}
+              active={filter === cat}
+              onClick={() => setFilter(cat)}
+              label={cat === "all" ? `All (${count})` : `${cat} (${count})`}
+            />
           );
         })}
       </div>
@@ -261,29 +296,34 @@ function shuffle(arr) {
   return a;
 }
 
-function TestScopeSelect({ onSelect }) {
-  // Step 1 of test setup: pick the chapter scope
-  const scopes = [
-    ...CHAPTERS.map(ch => ({
-      key: ch.id,
-      icon: ch.icon,
-      label: `Chapter ${ch.number} — ${ch.shortTitle}`,
-      desc: ch.title.replace(/^Chapter \d+ — /, ""),
-      count: ch.questions.length,
-    })),
-    {
-      key: "all",
+function TestScopeSelect({ activeTrackId, onSelect }) {
+  const track = getTrack(activeTrackId);
+  if (!track) return null;
+
+  const scopes = track.chapters.map(ch => ({
+    key: ch.id,
+    icon: ch.icon,
+    label: ch.shortTitle,
+    desc: ch.title,
+    count: ch.questions.length,
+  }));
+
+  // Only offer "All in track" if there's more than one chapter to combine.
+  if (track.chapters.length > 1) {
+    scopes.push({
+      key: `all-${track.id}`,
       icon: "🎯",
-      label: "All Chapters",
-      desc: "Cumulative review across every chapter — midterm prep",
-      count: CHAPTERS.reduce((sum, ch) => sum + ch.questions.length, 0),
-    },
-  ];
+      label: `All ${track.label}`,
+      desc: `Cumulative across every chapter in this track`,
+      count: track.chapters.reduce((sum, ch) => sum + ch.questions.length, 0),
+    });
+  }
 
   return (
     <div style={{ maxWidth: "480px", margin: "0 auto", paddingTop: "40px" }}>
       <h2 style={{ color: theme.text, fontSize: "22px", fontWeight: 700, marginBottom: "6px", textAlign: "center" }}>Test Mode</h2>
-      <p style={{ color: theme.textMuted, fontSize: "14px", textAlign: "center", marginBottom: "32px" }}>Step 1 of 2 — choose chapter scope</p>
+      <p style={{ color: theme.textMuted, fontSize: "14px", textAlign: "center", marginBottom: "8px" }}>Step 1 of 2 — choose scope</p>
+      <p style={{ color: theme.accent, fontSize: "13px", textAlign: "center", marginBottom: "32px", fontWeight: 600 }}>{track.icon} {track.label}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {scopes.map(s => (
           <button key={s.key} onClick={() => onSelect(s.key)} style={{
@@ -325,25 +365,37 @@ function TestScopeSelect({ onSelect }) {
   );
 }
 
-function TestCategorySelect({ scope, onSelect, onBack }) {
-  // Step 2 of test setup: pick category within the chosen scope
-  const pool = getQuestionsByScope(scope);
-  const cats = [
-    { key: "True/False", icon: "✓✗", desc: "True or False statements" },
-    { key: "Circuit Action", icon: "⚡", desc: "Predict circuit behavior changes" },
-    { key: "Self-Test", icon: "📝", desc: "Multiple choice from all sections" },
-    { key: "all", icon: "🎯", desc: "Everything combined & shuffled" },
-  ].map(c => ({
-    ...c,
-    count: c.key === "all" ? pool.length : pool.filter(q => q.category === c.key).length,
-  })).filter(c => c.count > 0);
+function TestFilterSelect({ scope, onStart, onBack }) {
+  const isTrackScope = typeof scope === "string" && scope.startsWith("all-");
+  const chapter = isTrackScope ? null : getChapter(scope);
+  const track = isTrackScope ? getTrack(scope.slice(4)) : null;
+  const fullPool = getQuestionsByScope(scope);
 
-  const scopeLabel = scope === "all"
-    ? "All Chapters"
-    : `Chapter ${getChapter(scope).number} — ${getChapter(scope).shortTitle}`;
+  const [selectedSection, setSelectedSection] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  // Counts always reflect the *other* filter, so what you see is what you get.
+  const countForSection = (sec) => {
+    let p = fullPool;
+    if (sec !== "all") p = p.filter(q => q.section === sec);
+    if (selectedCategory !== "all") p = p.filter(q => q.category === selectedCategory);
+    return p.length;
+  };
+  const countForCategory = (cat) => {
+    let p = fullPool;
+    if (selectedSection !== "all") p = p.filter(q => q.section === selectedSection);
+    if (cat !== "all") p = p.filter(q => q.category === cat);
+    return p.length;
+  };
+
+  const finalCount = countForCategory(selectedCategory); // already filtered by section
+  const categoriesInPool = [...new Set(fullPool.map(q => q.category))];
+  const sections = chapter ? chapter.sections : [];
+
+  const scopeLabel = isTrackScope ? `All ${track.label}` : `${chapter.icon} ${chapter.shortTitle}`;
 
   return (
-    <div style={{ maxWidth: "480px", margin: "0 auto", paddingTop: "40px" }}>
+    <div style={{ maxWidth: "560px", margin: "0 auto", paddingTop: "24px" }}>
       <button onClick={onBack} style={{
         background: "none",
         border: "none",
@@ -356,45 +408,92 @@ function TestCategorySelect({ scope, onSelect, onBack }) {
         padding: "4px 0",
       }}>← Back</button>
       <h2 style={{ color: theme.text, fontSize: "22px", fontWeight: 700, marginBottom: "6px", textAlign: "center" }}>Test Mode</h2>
-      <p style={{ color: theme.textMuted, fontSize: "14px", textAlign: "center", marginBottom: "8px" }}>Step 2 of 2 — choose categories</p>
+      <p style={{ color: theme.textMuted, fontSize: "14px", textAlign: "center", marginBottom: "8px" }}>Step 2 of 2 — choose filters</p>
       <p style={{ color: theme.accent, fontSize: "13px", textAlign: "center", marginBottom: "32px", fontWeight: 600 }}>Scope: {scopeLabel}</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        {cats.map(c => (
-          <button key={c.key} onClick={() => onSelect(c.key)} style={{
-            padding: "18px 20px",
-            background: theme.surface,
-            border: `1px solid ${theme.border}`,
-            borderRadius: "12px",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "16px",
-            color: theme.text,
-            fontFamily: "inherit",
-            textAlign: "left",
-            transition: "border-color 0.15s, background 0.15s",
-          }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = theme.accentDim; e.currentTarget.style.background = theme.surfaceHover; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = theme.border; e.currentTarget.style.background = theme.surface; }}
-          >
-            <span style={{ fontSize: "24px", width: "40px", textAlign: "center" }}>{c.icon}</span>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 700, fontSize: "15px", marginBottom: "2px" }}>{c.key === "all" ? "All Questions" : c.key}</div>
-              <div style={{ fontSize: "12.5px", color: theme.textMuted }}>{c.desc}</div>
-            </div>
-            <span style={{
-              padding: "4px 12px",
-              borderRadius: "999px",
-              background: theme.bg,
-              border: `1px solid ${theme.border}`,
-              fontSize: "13px",
-              fontWeight: 700,
-              color: theme.textMuted,
-              fontFamily: "'JetBrains Mono', monospace",
-            }}>{c.count}</span>
-          </button>
-        ))}
+
+      {/* Section filter — only for single-chapter scope with >1 sections */}
+      {chapter && sections.length > 1 && (
+        <div style={{ marginBottom: "24px" }}>
+          <div style={{
+            color: theme.textMuted,
+            fontSize: "11px",
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.5px",
+            marginBottom: "10px",
+          }}>Section</div>
+          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+            <FilterPill
+              active={selectedSection === "all"}
+              onClick={() => setSelectedSection("all")}
+              label={`All sections (${countForSection("all")})`}
+            />
+            {sections.map(sec => {
+              const count = countForSection(sec.id);
+              return (
+                <FilterPill
+                  key={sec.id}
+                  active={selectedSection === sec.id}
+                  disabled={count === 0}
+                  onClick={() => setSelectedSection(sec.id)}
+                  label={`${sec.title} (${count})`}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Category filter — always shown */}
+      <div style={{ marginBottom: "32px" }}>
+        <div style={{
+          color: theme.textMuted,
+          fontSize: "11px",
+          fontWeight: 700,
+          textTransform: "uppercase",
+          letterSpacing: "0.5px",
+          marginBottom: "10px",
+        }}>Category</div>
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+          <FilterPill
+            active={selectedCategory === "all"}
+            onClick={() => setSelectedCategory("all")}
+            label={`All (${countForCategory("all")})`}
+          />
+          {categoriesInPool.map(cat => {
+            const count = countForCategory(cat);
+            return (
+              <FilterPill
+                key={cat}
+                active={selectedCategory === cat}
+                disabled={count === 0}
+                onClick={() => setSelectedCategory(cat)}
+                label={`${cat} (${count})`}
+              />
+            );
+          })}
+        </div>
       </div>
+
+      <button
+        onClick={() => onStart({ section: selectedSection, category: selectedCategory })}
+        disabled={finalCount === 0}
+        style={{
+          width: "100%",
+          padding: "16px",
+          borderRadius: "12px",
+          border: "none",
+          background: finalCount > 0 ? theme.accent : theme.border,
+          color: finalCount > 0 ? "#0f1117" : theme.textDim,
+          cursor: finalCount > 0 ? "pointer" : "not-allowed",
+          fontSize: "15px",
+          fontWeight: 700,
+          fontFamily: "inherit",
+          transition: "all 0.15s",
+        }}
+      >
+        Start Test {finalCount > 0 ? `(${finalCount} questions)` : "(no questions match)"}
+      </button>
     </div>
   );
 }
@@ -423,7 +522,7 @@ function TestQuestion({ q, qIndex, total, onAnswer, showChapter }) {
     <div style={{ maxWidth: "600px", margin: "0 auto" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-          {showChapter && <ChapterBadge chapterNumber={q.chapterNumber} />}
+          {showChapter && <ChapterBadge chapterId={q.chapterId} />}
           <CategoryBadge category={q.category} />
           <SectionBadge section={q.section} />
         </div>
@@ -653,20 +752,29 @@ function TestResults({ questions, answers, onRestart, onMenu, showChapter }) {
   );
 }
 
-function TestMode() {
-  const [phase, setPhase] = useState("scope"); // scope, category, testing, results
+function TestMode({ activeTrackId }) {
+  const [phase, setPhase] = useState("scope"); // scope, filter, testing, results
   const [scope, setScope] = useState(null);
-  const [category, setCategory] = useState(null);
+  const [filters, setFilters] = useState({ section: "all", category: "all" });
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
 
-  const isCrossChapter = scope === "all";
+  // If the user switches tracks mid-flow, snap test mode back to step 1.
+  useEffect(() => {
+    setPhase("scope");
+    setScope(null);
+    setFilters({ section: "all", category: "all" });
+    setQuestions([]);
+    setCurrentIndex(0);
+    setAnswers([]);
+  }, [activeTrackId]);
 
-  const startTest = (cat) => {
-    let pool = getQuestionsByScope(scope);
-    if (cat !== "all") pool = pool.filter(q => q.category === cat);
-    setCategory(cat);
+  const isCrossChapter = typeof scope === "string" && scope.startsWith("all-");
+
+  const startTest = (f) => {
+    const pool = getQuestionsByScope(scope, { section: f.section, category: f.category });
+    setFilters(f);
     setQuestions(shuffle(pool));
     setAnswers([]);
     setCurrentIndex(0);
@@ -684,13 +792,13 @@ function TestMode() {
   };
 
   if (phase === "scope") return (
-    <TestScopeSelect onSelect={s => { setScope(s); setPhase("category"); }} />
+    <TestScopeSelect activeTrackId={activeTrackId} onSelect={s => { setScope(s); setPhase("filter"); }} />
   );
 
-  if (phase === "category") return (
-    <TestCategorySelect
+  if (phase === "filter") return (
+    <TestFilterSelect
       scope={scope}
-      onSelect={startTest}
+      onStart={startTest}
       onBack={() => setPhase("scope")}
     />
   );
@@ -700,8 +808,8 @@ function TestMode() {
       questions={questions}
       answers={answers}
       showChapter={isCrossChapter}
-      onRestart={() => startTest(category)}
-      onMenu={() => { setPhase("scope"); setScope(null); setCategory(null); }}
+      onRestart={() => startTest(filters)}
+      onMenu={() => { setPhase("scope"); setScope(null); setFilters({ section: "all", category: "all" }); }}
     />
   );
 
@@ -721,7 +829,19 @@ function TestMode() {
 
 export default function App() {
   const [tab, setTab] = useState("study");
-  const [activeChapterId, setActiveChapterId] = useState(CHAPTERS[0].id);
+  const [activeTrackId, setActiveTrackId] = useState(TRACKS[0].id);
+  const activeTrack = getTrack(activeTrackId);
+  const [activeChapterId, setActiveChapterId] = useState(activeTrack.chapters[0].id);
+
+  // When track changes, snap active chapter to that track's first chapter.
+  useEffect(() => {
+    const track = getTrack(activeTrackId);
+    if (!track) return;
+    if (!track.chapters.some(ch => ch.id === activeChapterId)) {
+      setActiveChapterId(track.chapters[0].id);
+    }
+  }, [activeTrackId, activeChapterId]);
+
   const activeChapter = getChapter(activeChapterId);
 
   return (
@@ -743,12 +863,14 @@ export default function App() {
         borderBottom: `1px solid ${theme.border}`,
       }}>
         <div style={{ maxWidth: "720px", margin: "0 auto", padding: "12px 20px" }}>
-          {/* Top row: brand + study/test toggle */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: tab === "study" ? "10px" : "0" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          {/* Row 1: brand + study/test toggle */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0 }}>
               <span style={{ fontSize: "18px" }}>🎓</span>
-              <span style={{ fontWeight: 800, fontSize: "15px", letterSpacing: "-0.3px" }}>Devices Mastery</span>
-              <span style={{ color: theme.textDim, fontSize: "12px", fontWeight: 500 }}>Midterm Prep</span>
+              <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+                <span style={{ fontWeight: 800, fontSize: "15px", letterSpacing: "-0.3px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{activeTrack.label}</span>
+                <span style={{ color: theme.textDim, fontSize: "11px", fontWeight: 500 }}>{activeTrack.subtitle}</span>
+              </div>
             </div>
             <div style={{
               display: "flex",
@@ -757,6 +879,7 @@ export default function App() {
               borderRadius: "8px",
               padding: "3px",
               border: `1px solid ${theme.border}`,
+              flexShrink: 0,
             }}>
               {[
                 { key: "study", label: "📚 Study" },
@@ -778,15 +901,41 @@ export default function App() {
             </div>
           </div>
 
-          {/* Chapter selector — only shown in study tab */}
+          {/* Row 2: track switcher (only shown when 2+ tracks) */}
+          {TRACKS.length > 1 && (
+            <div style={{ display: "flex", gap: "6px", marginBottom: tab === "study" ? "10px" : "0", flexWrap: "wrap" }}>
+              {TRACKS.map(t => (
+                <button key={t.id} onClick={() => setActiveTrackId(t.id)} style={{
+                  padding: "5px 11px",
+                  borderRadius: "999px",
+                  border: `1px solid ${activeTrackId === t.id ? theme.accent : theme.border}`,
+                  background: activeTrackId === t.id ? theme.accentBg : "transparent",
+                  color: activeTrackId === t.id ? theme.accent : theme.textMuted,
+                  cursor: "pointer",
+                  fontSize: "11.5px",
+                  fontWeight: 700,
+                  fontFamily: "inherit",
+                  transition: "all 0.15s",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                }}>
+                  <span>{t.icon}</span>
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Row 3: chapter pills (study tab only, filtered to active track) */}
           {tab === "study" && (
             <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-              {CHAPTERS.map(ch => (
+              {activeTrack.chapters.map(ch => (
                 <button key={ch.id} onClick={() => setActiveChapterId(ch.id)} style={{
                   padding: "6px 12px",
                   borderRadius: "999px",
                   border: `1px solid ${activeChapterId === ch.id ? theme.accent : theme.border}`,
-                  background: activeChapterId === ch.id ? "rgba(108,159,255,0.12)" : "transparent",
+                  background: activeChapterId === ch.id ? theme.accentBg : "transparent",
                   color: activeChapterId === ch.id ? theme.accent : theme.textMuted,
                   cursor: "pointer",
                   fontSize: "12px",
@@ -798,7 +947,7 @@ export default function App() {
                   gap: "6px",
                 }}>
                   <span>{ch.icon}</span>
-                  Ch.{ch.number} — {ch.shortTitle}
+                  {ch.shortTitle}
                   <span style={{
                     fontSize: "10px",
                     color: theme.textDim,
@@ -813,8 +962,8 @@ export default function App() {
 
       {/* Content */}
       <div style={{ maxWidth: "720px", margin: "0 auto", padding: "24px 20px 60px" }}>
-        {tab === "study" && <Visualizer chapter={activeChapter} />}
-        {tab === "test" && <TestMode />}
+        {tab === "study" && activeChapter && <Visualizer chapter={activeChapter} />}
+        {tab === "test" && <TestMode activeTrackId={activeTrackId} />}
       </div>
     </div>
   );
